@@ -57,17 +57,20 @@ DEVICE_GLOBAL_STATUS = {
 READ_ONLY = False
 READ_WRITE = True
 class SensorSpec:
-    def __init__(self, id: int, comment: str, multiplier: str, min_limit: str, max_limit: str, unit: str, sensor_state_class: str, writeable: bool):
+    def __init__(self, id: int, comment: str, multiplier: str, min_limit: str, max_limit: str, unit: str, sensor_state_class: str, icon: str, writeable: bool):
         self.id = id
         self.comment = comment
         self.multiplier = multiplier
         self.min_limit = min_limit
         self.max_limit = max_limit
         self.unit = unit
+        self.sensor_state_class = sensor_state_class
+        self.icon = icon
         self.writeable = writeable
 
+
     def __repr__(self):
-        return f"DataRow({self.id}, {self.comment}, {self.multiplier}, {self.min_limit}, {self.max_limit}, {self.unit}, {self.writeable})"
+        return f"DataRow({self.id}, {self.comment}, {self.multiplier}, {self.min_limit}, {self.max_limit}, {self.unit}, {self.sensor_state_class}, {self.icon}, {self.writeable})"
     
 SENSOR_DEFS = {
     "ACK_ALARMS": [3, "Hälytysten kuittaus (0=ODOTETAAN KUITTAUSTA, 1=OK/KUITTAA)", "1", "1", "0", "1", "", None, "mdi:information-outline", READ_WRITE],
