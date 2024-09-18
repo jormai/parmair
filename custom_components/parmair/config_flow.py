@@ -83,7 +83,8 @@ class ParmairConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self.api_data = await self.api.async_get_data()
             _LOGGER.debug("API Client: get data")
             _LOGGER.debug(f"API Client Data: {self.api_data}")
-            return self.api.data["comm_sernum"]
+            return f"{self.api.data['parmair_MULTI_FW_VER']}"
+                      
         except ConnectionException as connerr:
             _LOGGER.error(
                 f"Failed to connect to host: {host}:{port} - slave id: {slave_id} - Exception: {connerr}"

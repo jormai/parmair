@@ -227,8 +227,8 @@ class ParmairAPI:
         # Start address 4 read 64 registers to read M1 (Common Inverter Info) in 1-pass
         # Start address 70 read 94 registers to read M103+M160 (Realtime Power/Energy Data) in 1-pass
         try:
-            offset = 1020
-            count = 86
+            offset = 1014
+            count = 100
             read_v2_data = self.read_holding_registers(
                 slave=self._slave_id, address=(self._base_addr + offset), count=count
             )
@@ -244,10 +244,15 @@ class ParmairAPI:
         decoder = BinaryPayloadDecoder.fromRegisters(
             read_v2_data.registers, byteorder=Endian.BIG
         )
-
-        # register 1020
+        # register 1014
         _LOGGER.debug("(read_parmair_modbus_v2) Decoding")
 
+        self.data["parmair_MULTI_FW_VER"] = decoder.decode_16bit_int()  # Address 1014
+        _LOGGER.debug(f"(parmair_MULTI_FW_VER) {self.data["parmair_MULTI_FW_VER"]}")
+
+        self.data["parmair_MULTI_SW_VER"] = decoder.decode_16bit_int()  # Address 1015
+        self.data["parmair_MULTI_BL_VER"] = decoder.decode_16bit_int()  # Address 1016
+        decoder.skip_bytes(3*2)  # Skipping address 1017 .. 1019
         self.data["parmair_raitisilma"] = decoder.decode_16bit_int()  # Address 1020
         self.data["parmair_LTO_kylmapiste"] = decoder.decode_16bit_int()  # Address 1021
         self.data["parmair_tuloilma"] = decoder.decode_16bit_int()  # Address 1022
@@ -269,7 +274,7 @@ class ParmairAPI:
         self.data["parmair_home_speed_s"] = decoder.decode_16bit_int()  # Address 1060
         self.data["parmair_TE10_MIN_HOME_S"] = decoder.decode_16bit_int()  # Address 1061
         self.data["parmair_TE10_CONTROL_MODE_S"] = decoder.decode_16bit_int()  # Address 1062
-
+        _LOGGER.debug(f"(read_parmair_modbus_v2) Decoded {self.data}")
         try:
             offset = 1180
             count = 18
@@ -293,7 +298,8 @@ class ParmairAPI:
         decoder.skip_bytes(10)  # Skipping addresses 1182-86
         self.data["parmair_iv_nopeusasetus"] = decoder.decode_16bit_int()  # Address 1187
         self.data["parmair_kosteusmittauksen_24h_ka"] = decoder.decode_16bit_int()  # Address 1192
-
+        _LOGGER.debug(f"(read_parmair_modbus_v2) Decoded {self.data}")
+        
         _LOGGER.debug("(read_parmair_modbus_v2) Check Model # todo")
     
         _LOGGER.debug("(read_parmair_modbus_v2) Completed")
