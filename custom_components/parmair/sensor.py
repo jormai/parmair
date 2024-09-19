@@ -1,18 +1,20 @@
+import logging
+from typing import Any
 from custom_components.parmair import ParmairConfigEntry
 from custom_components.parmair.api import ParmairAPI
-from custom_components.parmair.const import CONF_NAME
+from custom_components.parmair.const import CONF_NAME, DOMAIN
 from custom_components.parmair.const import SENSOR_DICT
 from custom_components.parmair.coordinator import ParmairCoordinator
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+_LOGGER = logging.getLogger(__name__)
 
 def add_sensor_defs(
     coordinator: ParmairCoordinator,
     config_entry: ParmairConfigEntry,
-    sensor_list,
-    sensor_definitions,
+    sensor_list
 ):
     """Class Initializitation."""
 
@@ -50,6 +52,7 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         """Class Initializitation."""
         super().__init__(coordinator)
         self._coordinator = coordinator
+        TODO: set from sensor_data that is a dict item
         self._name = sensor_data["name"]
         self._key = sensor_data["key"]
         self._unit_of_measurement = sensor_data["unit"]

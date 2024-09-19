@@ -59,10 +59,10 @@ async def async_update_device_registry(
         configuration_url=f"http://{config_entry.data.get(CONF_HOST)}",
         identifiers={(DOMAIN, coordinator.api.data["comm_sernum"])},
         manufacturer=coordinator.api.data["comm_manufact"],
-        model=coordinator.api.data["comm_model"],
+        model=coordinator.api.data["VENT_MACHINE"],
         name=config_entry.data.get(CONF_NAME),
         serial_number=coordinator.api.data["comm_sernum"],
-        sw_version=coordinator.api.data["comm_version"],
+        sw_version=coordinator.api.data["MULTI_SW_VER"],
         via_device=None,
     )
 
