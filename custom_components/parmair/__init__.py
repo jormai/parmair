@@ -53,7 +53,6 @@ async def async_update_device_registry(
     """Manual device registration."""
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
     device_registry = dr.async_get(hass)
-    !! TODO !!
     device_registry.async_get_or_create(
         config_entry_id=config_entry.entry_id,
         hw_version=None,

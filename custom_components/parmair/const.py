@@ -71,7 +71,7 @@ class SensorSpec:
 
     def __repr__(self):
         return f"DataRow({self.id}, {self.comment}, {self.multiplier}, {self.min_limit}, {self.max_limit}, {self.unit}, {self.sensor_state_class}, {self.icon}, {self.writeable})"
-    
+# note, id must be ascending    
 SENSOR_DEFS = {
     "ACK_ALARMS": [3, "Hälytysten kuittaus (0=ODOTETAAN KUITTAUSTA, 1=OK/KUITTAA)", "1", "1", "0", "1", "", None, "mdi:information-outline", READ_WRITE],
     "ALARM_COUNT": [4, "Aktiivisten hälytysten määrä", "1", "1", "0", "100", "", None, "mdi:information-outline", READ_ONLY],

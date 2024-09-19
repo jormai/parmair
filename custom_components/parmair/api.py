@@ -12,6 +12,8 @@ from pymodbus.constants import Endian
 from pymodbus.exceptions import ConnectionException, ModbusException
 from pymodbus.payload import BinaryPayloadDecoder
 
+from custom_components.parmair.const import SENSOR_DICT
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -59,27 +61,13 @@ class ParmairAPI:
         self.data = {}
         # Initialize ModBus data structure before first read
         self.data = {
-            "parmair_raitisilma": 1,
-            "parmair_LTO_kylmapiste": 1,
-            "parmair_tuloilma": 1,
-            "parmair_jateilma": 1,
-            "parmair_poistoilma": 1,
-            "parmair_kosteusmittaus": 1,
-            "parmair_CO2": 1,
-            "parmair_tulopuhallin_saato": 1,
-            "pa_poistopuhallin_saato": 1,
-            "parmair_jalkilammitys": 1,
-            "parmair_saatoasento_LTO": 1,
-            "parmair_ohituslammitys": 1,
-            "parmair_home_speed_s": 1,
-            "parmair_TE10_MIN_HOME_S": 1,
-            "parmair_TE10_CONTROL_MODE_S": 1,
-            "parmair_UNIT_CONTROL_FO": 1,
-            "parmair_mac_state": 1,
-            "parmair_iv_nopeusasetus": 1,
-            "parmair_kosteusmittauksen_24h_ka": 1
+            "comm_sernum": "",
+            "comm_manufact": "Parmair",
+            "comm_model": "",
+            "comm_sernum": "",
+            "comm_version": "",
         }
-        
+
 
     @property
     def name(self):
@@ -183,7 +171,7 @@ class ParmairAPI:
                 # HA way to call a sync function from async function
                 # https://developers.home-assistant.io/docs/asyncio_working_with_async?#calling-sync-functions-from-async
                 result = await self._hass.async_add_executor_job(
-                    self.read_parmair_modbus
+                    self.read_modbus_registers
                 )
                 self.close()
                 _LOGGER.debug("End Get data")
@@ -202,13 +190,40 @@ class ParmairAPI:
         except ModbusException as modbus_error:
             _LOGGER.debug(f"Async Get Data modbus_error: {modbus_error}")
             raise ModbusError() from modbus_error
+    
 
-    def read_parmair_modbus(self):
-        """Read Modbus Data Function."""
+    def read_modbus_registers(self)-> bool:
+        """Read the Modbus registers in chunks of up to 64 contiguous addresses."""
+        # Extract all addresses (ids)
+        count = 64
+        last_value = list(SENSOR_DICT.values())[-1]
+        first_value = list(SENSOR_DICT.values())[0]
+        it = iter(SENSOR_DICT.keys())
+        result = True
         try:
-            self.read_parmair_modbus_v2()
-            result = True
-            _LOGGER.debug(f"read_parmair_modbus: success {result}")
+            for start_address in range(first_value, last_value + 1, count):
+                _LOGGER.debug(f"(read_parmair_modbus_v2) Slave ID: {self._slave_id}" )
+                _LOGGER.debug("(read_parmair_modbus_v2) Base Address: %s", self._base_addr)
+                _LOGGER.debug(f"(read_parmair_modbus_v2) Count: {count}")
+                # Read registers from Modbus
+                read_data = self._client.read_holding_registers(start_address+self._base_addr, count)
+                
+                # Process the result (store or print the values here)
+                _LOGGER.debug(f"Read registers from {start_address} to {start_address + count - 1}: {read_data} : {read_data.registers}")
+                
+                decoder = BinaryPayloadDecoder.fromRegisters(read_data.registers, byteorder=Endian.BIG)
+                key = next(it)
+                try:
+                    for i in range(0, count):
+                        if SENSOR_DICT[key].id == start_address + i
+                            self.data[key] = decoder.decode_16bit_int()
+                            _LOGGER.debug(f"{key} = {self.data[key]}")
+                            key = next(it)
+                        else:
+                            decoder.skip_bytes(2)
+                except StopIteration:
+                    _LOGGER.debug("all sensor items handled")
+                    
         except Exception as modbus_error:
             _LOGGER.debug(f"read_parmair_modbus: failed with error: {modbus_error}")
             result = False
