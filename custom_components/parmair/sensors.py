@@ -1,4 +1,7 @@
+from custom_components.parmair import ParmairConfigEntry
 from custom_components.parmair.api import ParmairAPI
+from custom_components.parmair.const import CONF_NAME
+from custom_components.parmair.const import SENSOR_DICT
 from custom_components.parmair.coordinator import ParmairCoordinator
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.core import HomeAssistant, callback
@@ -7,24 +10,38 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 def add_sensor_defs(
     coordinator: ParmairCoordinator,
-    config_entry: ParmairAPI,
+    config_entry: ParmairConfigEntry,
     sensor_list,
     sensor_definitions,
 ):
     """Class Initializitation."""
 
-    for sensor_info in sensor_definitions.values():
-        sensor_data = {
-            "name": sensor_info[0],
-            "key": sensor_info[1],
-            "unit": sensor_info[2],
-            "icon": sensor_info[3],
-            "device_class": sensor_info[4],
-            "state_class": sensor_info[5],
-        }
+    for sensor in SENSOR_DICT.items():        
         sensor_list.append(
-            ParmairSensor(coordinator, config_entry, sensor_data)
+            ParmairSensor(coordinator, config_entry, sensor)
         )
+
+async def async_setup_entry(
+    hass: HomeAssistant, config_entry: ParmairConfigEntry, async_add_entities
+):
+    """Sensor Platform setup."""
+
+    # Get handler to coordinator from config
+    coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
+
+    _LOGGER.debug("(sensor) Name: %s", config_entry.data.get(CONF_NAME))
+    _LOGGER.debug("(sensor) FW Version: %s", coordinator.api.data["MULTI_FW_VER"])
+    _LOGGER.debug("(sensor) SW Version: %s", coordinator.api.data["MULTI_SW_VER"])
+    _LOGGER.debug("(sensor) BL Version: %s", coordinator.api.data["MULTI_BL_VER"])
+    _LOGGER.debug("(sensor) Vent machine type code #: %s", coordinator.api.data["VENT_MACHINE"])
+
+    sensor_list = []
+    add_sensor_defs(coordinator, config_entry, sensor_list)
+
+    async_add_entities(sensor_list)
+
+    return True
+
 
 class ParmairSensor(CoordinatorEntity, SensorEntity):
     """Representation of an ABB SunSpec Modbus sensor."""
@@ -41,11 +58,12 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         self._state_class = sensor_data["state_class"]
         self._device_name = self._coordinator.api.name
         self._device_host = self._coordinator.api.host
-        self._device_model = self._coordinator.api.data["comm_model"]
+        self._device_model = self._coordinator.api.data["VENT_MACHINE"]
         self._device_manufact = self._coordinator.api.data["comm_manufact"]
-        self._device_sn = self._coordinator.api.data["comm_sernum"]
-        self._device_swver = self._coordinator.api.data["comm_version"]
-        self._device_hwver = self._coordinator.api.data["comm_options"]
+        self._device_sn = self._coordinator.api.data["VENT_MACHINE"]
+        self._device_swver = self._coordinator.api.data["MULTI_SW_VER"]
+        self._device_hwver = self._coordinator.api.data["MULTI_FW_VER"]
+
 
     @callback
     def _handle_coordinator_update(self) -> None:

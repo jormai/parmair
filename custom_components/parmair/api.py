@@ -61,13 +61,9 @@ class ParmairAPI:
         self.data = {}
         # Initialize ModBus data structure before first read
         self.data = {
-            "comm_sernum": "",
-            "comm_manufact": "Parmair",
-            "comm_model": "",
-            "comm_sernum": "",
-            "comm_version": "",
+            "comm_sernum": "1",
+            "comm_manufact": "Parmair"
         }
-
 
     @property
     def name(self):
@@ -196,12 +192,14 @@ class ParmairAPI:
         """Read the Modbus registers in chunks of up to 64 contiguous addresses."""
         # Extract all addresses (ids)
         count = 64
-        last_value = list(SENSOR_DICT.values())[-1]
-        first_value = list(SENSOR_DICT.values())[0]
+        last_value = list(SENSOR_DICT.values())[-1].id
+        first_value = list(SENSOR_DICT.values())[0].id
         it = iter(SENSOR_DICT.keys())
         result = True
         try:
+            loop = 0
             for start_address in range(first_value, last_value + 1, count):
+                _LOGGER.debug(f"(read_parmair_modbus_v2) loop {loop} first_value {first_value} last {last_value} start {start_address}" )
                 _LOGGER.debug(f"(read_parmair_modbus_v2) Slave ID: {self._slave_id}" )
                 _LOGGER.debug("(read_parmair_modbus_v2) Base Address: %s", self._base_addr)
                 _LOGGER.debug(f"(read_parmair_modbus_v2) Count: {count}")
@@ -215,14 +213,20 @@ class ParmairAPI:
                 key = next(it)
                 try:
                     for i in range(0, count):
-                        if SENSOR_DICT[key].id == start_address + i
+                        register = first_value + loop * count + i
+                        if SENSOR_DICT[key].id == register:
                             self.data[key] = decoder.decode_16bit_int()
-                            _LOGGER.debug(f"{key} = {self.data[key]}")
+                            if (SENSOR_DICT[key].multiplier != 1):
+                                self.data[key] = self.data[key] / SENSOR_DICT[key].multiplier
+                            _LOGGER.debug(f"reg {register}:{key} = {self.data[key]}. m={SENSOR_DICT[key].multiplier}. {SENSOR_DICT[key].comment}")
                             key = next(it)
                         else:
+                            _LOGGER.debug(f"Skipping {register}")
                             decoder.skip_bytes(2)
                 except StopIteration:
                     _LOGGER.debug("all sensor items handled")
+                    break
+                loop+=1
                     
         except Exception as modbus_error:
             _LOGGER.debug(f"read_parmair_modbus: failed with error: {modbus_error}")

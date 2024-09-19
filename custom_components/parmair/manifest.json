@@ -4,7 +4,7 @@
   "dependencies": [],
   "documentation": "https://github.com/jikaheimo/parmair",
   "domain": "parmair",
-  "integration_type": "hub",
+  "integration_type": "device",
   "iot_class": "local_polling",
   "loggers": ["custom_components.parmair"],
   "name": "Parmair",

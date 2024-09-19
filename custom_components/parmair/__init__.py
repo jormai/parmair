@@ -87,7 +87,7 @@ async def async_setup_entry(
 
     # Test to see if api initialised correctly, else raise ConfigNotReady to make HA retry setup
     # Change this to match how your api will know if connected or successful update
-    if not coordinator.api.data["parmair_MULTI_FW_VER"]:
+    if not coordinator.api.data["comm_sernum"]:
         raise ConfigEntryNotReady(
             f"Timeout connecting to {config_entry.data.get(CONF_NAME)}"
         )
@@ -108,4 +108,5 @@ async def async_setup_entry(
     await async_update_device_registry(hass, config_entry)
 
     # Return true to denote a successful setup.
+    _LOGGER.debug(f"Parmair async setup complete!")
     return True

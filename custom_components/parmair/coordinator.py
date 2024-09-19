@@ -10,7 +10,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .api import ABBPowerOneFimerAPI, ParmairAPI
+from .api import ParmairAPI
 from .const import (
     CONF_BASE_ADDR,
     CONF_HOST,
