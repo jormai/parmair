@@ -118,7 +118,7 @@ SENSOR_DEFS = {
     "TE30_S": [73,10, "Asetusarvo, Poistolämpötila (Tavoiteltava huonelämpötila kesäkaudella)", "4", "18.0", "15.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
     "AUTO_HEATER_ENABLE_S": [74,1, "Asetus, Jälkilämmitysvastus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
     "AUTO_COLD_LOWSPEED_S": [75,1, "Asetus, Automaattinen tehonpudotus kylmissä olosuhteissa (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
-    "COLD_LOWSPEED_S": [76,10, "Asetus, Tehonpudostus pakkasella, pakkasraja", "4", "-15.0", "-25.0", "10.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
+    "COLD_LOWSPEED_S": [76,10, "Asetus, Tehonpudostus pakkasella, pakkasraja", "4", "-15.0", "-25.0", "10.0", "°C", None, "mdi:temperature-celsius", READ_WRITE],
     "AUTO_HUMIDITY_BOOST_S": [77,1, "Asetus, Automaattinen kosteustehostus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
     "ME05_BOOST_SENSITIVITY": [78,1, "Asetusarvo, kosteustehostuksen herkkyys", "4", "1", "0", "2", None, None, "mdi:information-outline", READ_WRITE],
     "ME_BST_TE01_LIMIT": [79,10, "Asetusarvo, Kosteustehostuksen ulkolämpötilaraja", "4", "-10.0", "-15.0", "15.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],

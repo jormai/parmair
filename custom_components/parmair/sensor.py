@@ -53,7 +53,8 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         """Class Initializitation."""
         super().__init__(coordinator)
         self._coordinator = coordinator
-        self._name = sensor_data[0]
+        self._name = sensor_data[1].comment
+        self._key = sensor_data[0]
         self._spec = sensor_data[1]
         self._device_name = self._coordinator.api.name
         self._device_host = self._coordinator.api.host
@@ -103,14 +104,14 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
     @property
     def state_class(self):
         """Return the sensor state_class."""
-        if self._spec.sensor_device_class == None:
-            return None
-        return SensorStateClass.MEASUREMENT
+        if self._spec.group == "2":
+            return SensorStateClass.MEASUREMENT
+        return None
 
     @property
     def entity_category(self):
         """Return the sensor entity_category."""
-        if self._state_class is None:
+        if self._spec.sensor_device_class is None:
             return EntityCategory.DIAGNOSTIC
         else:
             return None
@@ -118,8 +119,8 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if self._name in self._coordinator.api.data:
-            return self._coordinator.api.data[self._name]
+        if self._key in self._coordinator.api.data:
+            return self._coordinator.api.data[self._key]
         else:
             return None
 
@@ -136,7 +137,7 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
     @property
     def unique_id(self):
         """Return a unique ID to use for this entity."""
-        return f"{self._device_model}_{self._name}"
+        return f"{self._device_model}_{self._key}"
 
     @property
     def device_info(self):
