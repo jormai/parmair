@@ -2,10 +2,11 @@ import logging
 from typing import Any
 from custom_components.parmair import ParmairConfigEntry
 from custom_components.parmair.api import ParmairAPI
-from custom_components.parmair.const import CONF_NAME, DOMAIN
+from custom_components.parmair.const import CONF_NAME, DOMAIN, SensorSpec
 from custom_components.parmair.const import SENSOR_DICT
 from custom_components.parmair.coordinator import ParmairCoordinator
 from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -48,17 +49,12 @@ async def async_setup_entry(
 class ParmairSensor(CoordinatorEntity, SensorEntity):
     """Representation of an ABB SunSpec Modbus sensor."""
 
-    def __init__(self, coordinator, config_entry, sensor_data):
+    def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry, sensor_data:tuple[str,SensorSpec]):
         """Class Initializitation."""
         super().__init__(coordinator)
         self._coordinator = coordinator
-        TODO: set from sensor_data that is a dict item
-        self._name = sensor_data["name"]
-        self._key = sensor_data["key"]
-        self._unit_of_measurement = sensor_data["unit"]
-        self._icon = sensor_data["icon"]
-        self._device_class = sensor_data["device_class"]
-        self._state_class = sensor_data["state_class"]
+        self._name = sensor_data[0]
+        self._spec = sensor_data[1]
         self._device_name = self._coordinator.api.name
         self._device_host = self._coordinator.api.host
         self._device_model = self._coordinator.api.data["VENT_MACHINE"]
@@ -92,22 +88,24 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
     @property
     def native_unit_of_measurement(self):
         """Return the unit of measurement."""
-        return self._unit_of_measurement
+        return self._spec.unit
 
     @property
     def icon(self):
         """Return the sensor icon."""
-        return self._icon
+        return self._spec.icon
 
     @property
     def device_class(self):
         """Return the sensor device_class."""
-        return self._device_class
+        return self._spec.sensor_device_class
 
     @property
     def state_class(self):
         """Return the sensor state_class."""
-        return self._state_class
+        if self._spec.sensor_device_class == None:
+            return None
+        return SensorStateClass.MEASUREMENT
 
     @property
     def entity_category(self):
@@ -120,8 +118,8 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if self._key in self._coordinator.api.data:
-            return self._coordinator.api.data[self._key]
+        if self._name in self._coordinator.api.data:
+            return self._coordinator.api.data[self._name]
         else:
             return None
 
@@ -138,7 +136,7 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
     @property
     def unique_id(self):
         """Return a unique ID to use for this entity."""
-        return f"{self._device_sn}_{self._key}"
+        return f"{self._device_model}_{self._name}"
 
     @property
     def device_info(self):
