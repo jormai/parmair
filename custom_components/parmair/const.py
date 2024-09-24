@@ -1,4 +1,5 @@
 DOMAIN = "parmair"
+from enum import Enum
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     UnitOfElectricCurrent,
@@ -7,10 +8,17 @@ from homeassistant.const import (
     UnitOfFrequency,
     UnitOfPower,
     UnitOfTemperature,
+    Platform,
+)
+from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass,
+    BinarySensorEntity,
+    BinarySensorEntityDescription,
 )
 # Base component constants
 NAME = "Parmair MAC v2 ModBus TCP"
 DOMAIN = "parmair"
+DEFAULT_NAME = "parmair"
 VERSION = "1.0.0"
 ATTRIBUTION = "by @jormai"
 ISSUE_URL = "https://github.com/alexdejormai/parmair/issues"
@@ -56,8 +64,10 @@ DEVICE_GLOBAL_STATUS = {
 
 READ_ONLY = False
 READ_WRITE = True
+
+    
 class SensorSpec:
-    def __init__(self, id: int, multiplier: int, comment: str, group: str, factory_setting: str,  min_limit: str, max_limit: str, unit: str, sensor_device_class: SensorDeviceClass, icon: str, writeable: bool):
+    def __init__(self, id: int, multiplier: int, comment: str, group: str, factory_setting: str,  min_limit: str, max_limit: str, unit: str, sensor_device_class: SensorDeviceClass|BinarySensorDeviceClass, icon: str, writeable: bool, platform:Platform=Platform.BINARY_SENSOR):
         self.id = id
         self.comment = comment
         self.group = group
@@ -69,10 +79,11 @@ class SensorSpec:
         self.sensor_device_class = sensor_device_class
         self.icon = icon
         self.writeable = writeable
-
+        self.platform = platform
 
     def __repr__(self):
         return f"DataRow({self.id}, {self.comment}, {self.group}, {self.multiplier}, {self.min_limit}, {self.max_limit}, {self.unit}, {self.sensor_device_class}, {self.icon}, {self.writeable})"
+CONF_TE10_MIN_AWAY_S="TE10_MIN_AWAY_S"
 # note, id must be ascending    
 SENSOR_DEFS = {
     "ACK_ALARMS": [3,1, "Hälytysten kuittaus (0=ODOTETAAN KUITTAUSTA, 1=OK/KUITTAA)", "1", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
@@ -92,8 +103,8 @@ SENSOR_DEFS = {
     "TE30_M": [24,10, "Lämpötilamittaus, poistoilma", "2", "0.0", "-50.0", "120.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_ONLY],
     "ME05_M": [25,1, "Kosteusmittaus, LTO-laite", "2", "0", "0", "100", "%", SensorDeviceClass.MOISTURE, "mdi:water-percent", READ_ONLY],
     "QE05_M": [26,1, "Hiilidioksidimittaus, poistoilma", "2", "0", "-1", "2000", "ppm", SensorDeviceClass.CO2, "mdi:molecule-co2", READ_ONLY],
-    "TF10_I": [27,1, "Indikointi, tulopuhallin", "2", "0", "0", "1", None, None, "mdi:information-outline", READ_ONLY],
-    "PF30_I": [28,1, "Indikointi, poistopuhallin", "2", "0", "0", "1", None, None, "mdi:information-outline", READ_ONLY],
+    "TF10_I": [27,1, "Indikointi, tulopuhallin", "2", "0", "0", "1", None, BinarySensorDeviceClass.RUNNING, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "PF30_I": [28,1, "Indikointi, poistopuhallin", "2", "0", "0", "1", None, BinarySensorDeviceClass.RUNNING, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
     "ME20_M": [29,1, "Kosteusmittaus, kostea tila", "2", "0", "-1", "100", "%", SensorDeviceClass.MOISTURE, "mdi:water-percent", READ_ONLY],
     "QE20_M": [30,1, "Hiilidioksidimittaus, sisäilma", "2", "0", "-1", "2000", "ppm", SensorDeviceClass.CO2, "mdi:molecule-co2", READ_ONLY],
     "EXTERNAL_M": [31,10, "Ulkoinen ohjaussignaali (0-10V)", "2", "0.0", "-1.0", "100.0", "%", SensorDeviceClass.POWER_FACTOR, "mdi:percent-circle", READ_ONLY],
@@ -160,7 +171,7 @@ SENSOR_DEFS = {
     "BST_TIME_LIMIT": [144,1, "Asetusarvo, Kosteus ja CO2-tehostusten maksimiaika", "10", "1440", "15", "1440", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE],
     "UNIT_CONTROL_FO": [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
     "USERSTATECONTROL_FO": [181,1, "MAC 2 User state control from screen. 0=Off, 1=Away, 2=Home, 3=Boost, 4=Sauna, 5=Fireplace", "6", "1", "0", "5", None, None, "mdi:information-outline", READ_WRITE],
-    "DFRST_FI": [182,1, "Fiktiivinen indikointi, LTO:n sulatus päällä/pois", "6", "0", "0", "1", None, None, "mdi:information-outline", READ_ONLY],
+    "DFRST_FI": [182,1, "Fiktiivinen indikointi, LTO:n sulatus päällä/pois", "6", "0", "0", "1", None, BinarySensorDeviceClass.RUNNING, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
     "FG50_EA_M": [183,10, "Fiktiivinen mittaus, LTO:n hyötysuhde", "6", "0.0", "0.0", "100.0", "%", SensorDeviceClass.POWER_FACTOR, "mdi:percent-circle", READ_ONLY],
     "FILTER_STATE_FI": [184,1, "Fiktiivinen asetus, Suodattimen kunto (0=Idle, 1=Kuittaa vaihto, 2=Muistutushälytys)", "6", "0", "0", "2", None, None, "mdi:information-outline", READ_WRITE],
     "SENSOR_STATUS": [185,1, "Yhdistelmäanturin tila (1=Ok, 0=Initoimatta, -1=Modbuskommunikaatiovirhe, -2=Data puuttuu)", "6", "0", "-2", "1", None, None, "mdi:information-outline", READ_ONLY],
@@ -199,71 +210,4 @@ SENSOR_DICT = {key: SensorSpec(*values) for key, values in SENSOR_DEFS.items()}
             "state_class": sensor_info[5],
         }
 """
-SENSOR_TYPES_COMMON = {
-    # Address: 1014 
-    "MULTI_FW_VER": ["Multi24 firmware versio", "parmair_MULTI_FW_VER","", "mdi:information-outline", None],
-    # Address: 1015
-    "MULTI_SW_VER": ["Multi24 sovelluksen ohjelmaversio", "parmair_MULTI_SW_VER","", "mdi:information-outline", None],
-    # Address: 1016
-     "MULTI_BL_VER": ["Multi24 bootloader ohjelmaversio", "parmair_MULTI_BL_VER","", "mdi:information-outline", None],
-    # Address: 1020
-    "parmair_raitisilma": ["parmair.raitisilma", "parmair_raitisilma", "°C", "mdi:temperature-celsius", SensorDeviceClass.TEMPERATURE],
-    
-    # Address: 1021
-    "parmair_LTO_kylmapiste": ["parmair.LTO_kylmapiste", "parmair_LTO_kylmapiste", "°C", "mdi:temperature-celsius", SensorDeviceClass.TEMPERATURE],
-    
-    # Address: 1022
-    "parmair_tuloilma": ["parmair.tuloilma", "parmair_tuloilma", "°C", "mdi:temperature-celsius", SensorDeviceClass.TEMPERATURE],
-    
-    # Address: 1023
-    "parmair_jateilma": ["parmair.jateilma", "parmair_jateilma", "°C", "mdi:temperature-celsius", SensorDeviceClass.TEMPERATURE],
-    
-    # Address: 1024
-    "parmair_poistoilma": ["parmair.poistoilma", "parmair_poistoilma", "°C", "mdi:temperature-celsius", SensorDeviceClass.TEMPERATURE],
-    
-    # Address: 1025
-    "parmair_kosteusmittaus": ["parmair.kosteusmittaus", "parmair_kosteusmittaus", "%", "mdi:water-percent", SensorDeviceClass.MOISTURE],
-    
-    # Address: 1026
-    "parmair_CO2": ["parmair.CO2", "parmair_CO2", "ppm", "mdi:molecule-co2", SensorDeviceClass.CO2],
-    
-    # Address: 1040
-    "parmair_tulopuhallin_saato": ["parmair.tulopuhallin_saato", "parmair_tulopuhallin_saato", "%", "mdi:fan", SensorDeviceClass.SPEED],
-    
-    # Address: 1042
-    "pa_poistopuhallin_saato": ["pa.poistopuhallin_saato", "pa_poistopuhallin_saato", "%", "mdi:fan", SensorDeviceClass.SPEED],
-    
-    # Address: 1044
-    "parmair_jalkilammitys": ["parmair.jalkilammitys", "parmair_jalkilammitys", "%", "mdi:water-percent", SensorDeviceClass.MOISTURE],
-    
-    # Address: 1046
-    "parmair_saatoasento_LTO": ["parmair.saatoasento_LTO", "parmair_saatoasento_LTO", "%", "mdi:percent-circle", SensorDeviceClass.POWER_FACTOR],
-    
-    # Address: 1048
-    "parmair_ohituslammitys": ["parmair.ohituslammitys", "parmair_ohituslammitys", "%", "mdi:water-percent", SensorDeviceClass.MOISTURE],
-    
-    # Address: 1060
-    "parmair_home_speed_s": ["parmair.home_speed_s", "parmair_home_speed_s", "", "mdi:fan", SensorDeviceClass.SPEED],
-    
-    # Address: 1061
-    "parmair_TE10_MIN_HOME_S": ["parmair.TE10_MIN_HOME_S", "parmair_TE10_MIN_HOME_S", "°C", "mdi:temperature-celsius", SensorDeviceClass.TEMPERATURE],
-    
-    # Address: 1062
-    "parmair_TE10_CONTROL_MODE_S": ["parmair.TE10_CONTROL_MODE_S", "parmair_TE10_CONTROL_MODE_S", "", "mdi:temperature-celsius", SensorDeviceClass.TEMPERATURE],
 
-    # Address: 1125
-    "parmair_VENT_MACHINE": ["parmair IV-koneen tyyppikoodi", "parmair_VENT_MACHINE","", "mdi:information-outline", None],
-    
-    # Address: 1180
-    "parmair_UNIT_CONTROL_FO": ["parmair.UNIT_CONTROL_FO", "parmair_UNIT_CONTROL_FO", "", "mdi:percent-circle", "SensorStateClass.POWER"],
-    
-    # Address: 1181
-    "parmair_mac_state": ["parmair.mac_state", "parmair_mac_state", "", "mdi:fan", SensorDeviceClass.SPEED],
-    
-    # Address: 1187
-    "parmair_iv_nopeusasetus": ["parmair.iv-nopeusasetus", "parmair_iv_nopeusasetus", "", "mdi:fan", SensorDeviceClass.SPEED],
-    
-    # Address: 1192
-    "parmair_kosteusmittauksen_24h_ka": ["parmair.kosteusmittauksen_24h_ka", "parmair_kosteusmittauksen_24h_ka", "%", "mdi:water-percent", SensorDeviceClass.MOISTURE]
-
-}

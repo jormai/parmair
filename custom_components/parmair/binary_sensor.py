@@ -9,8 +9,13 @@ from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
-from homeassistant.const import Platform
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.const import Platform
+
+from homeassistant.components.binary_sensor import (
+    BinarySensorEntity,
+    BinarySensorEntityDescription,
+)
 _LOGGER = logging.getLogger(__name__)
 
 def add_sensor_defs(
@@ -21,9 +26,9 @@ def add_sensor_defs(
     """Class Initializitation."""
 
     for sensor in SENSOR_DICT.items():
-        if sensor[1].platform == Platform.SENSOR:
+        if sensor[1].platform == Platform.BINARY_SENSOR:
             sensor_list.append(
-                ParmairSensor(coordinator, config_entry, sensor)
+                ParmairBinarySensor(coordinator, config_entry, sensor)
             )
 
 async def async_setup_entry(
@@ -34,11 +39,11 @@ async def async_setup_entry(
     # Get handler to coordinator from config
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
 
-    _LOGGER.debug("(sensor) Name: %s", config_entry.data.get(CONF_NAME))
-    _LOGGER.debug("(sensor) FW Version: %s", coordinator.api.data["MULTI_FW_VER"])
-    _LOGGER.debug("(sensor) SW Version: %s", coordinator.api.data["MULTI_SW_VER"])
-    _LOGGER.debug("(sensor) BL Version: %s", coordinator.api.data["MULTI_BL_VER"])
-    _LOGGER.debug("(sensor) Vent machine type code #: %s", coordinator.api.data["VENT_MACHINE"])
+    _LOGGER.debug("(binary sensor) Name: %s", config_entry.data.get(CONF_NAME))
+    _LOGGER.debug("(binary sensor) FW Version: %s", coordinator.api.data["MULTI_FW_VER"])
+    _LOGGER.debug("(binary sensor) SW Version: %s", coordinator.api.data["MULTI_SW_VER"])
+    _LOGGER.debug("(binary sensor) BL Version: %s", coordinator.api.data["MULTI_BL_VER"])
+    _LOGGER.debug("(binary sensor) Vent machine type code #: %s", coordinator.api.data["VENT_MACHINE"])
 
     sensor_list = []
     add_sensor_defs(coordinator, config_entry, sensor_list)
@@ -48,8 +53,8 @@ async def async_setup_entry(
     return True
 
 
-class ParmairSensor(CoordinatorEntity, SensorEntity):
-    """Representation of an ABB SunSpec Modbus sensor."""
+class ParmairBinarySensor(CoordinatorEntity, BinarySensorEntity):
+    """Representation of an Parmair binart sensor."""
 
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry, sensor_data:tuple[str,SensorSpec]):
         """Class Initializitation."""
@@ -135,6 +140,15 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
     def should_poll(self) -> bool:
         """No need to poll. Coordinator notifies entity of updates."""
         return False
+
+    @property
+    def is_on(self):
+        """Return the state of the sensor."""
+        if self._key in self._coordinator.api.data:
+            return self._coordinator.api.data[self._key]>0
+        else:
+            return None
+
 
     @property
     def unique_id(self):

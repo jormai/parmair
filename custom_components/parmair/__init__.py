@@ -1,7 +1,10 @@
 
+import ipaddress
 import logging
+import voluptuous as vol
 from collections.abc import Callable
 from dataclasses import dataclass
+import homeassistant.helpers.config_validation as cv
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
@@ -15,13 +18,36 @@ from custom_components.parmair.coordinator import ParmairCoordinator
 from .const import (
     CONF_HOST,
     CONF_NAME,
+    CONF_PORT,
+    CONF_TE10_MIN_AWAY_S,
+    DEFAULT_NAME,
+    DEFAULT_PORT,
     DOMAIN,
+    SENSOR_DICT,
     STARTUP_MESSAGE,
+    SensorSpec,
 )
-
+"""
+CONFIG_SCHEMA = vol.Schema(
+    vol.All(
+        cv.deprecated(DOMAIN),
+        {
+            DOMAIN: vol.Schema(
+                {
+                    vol.Required(CONF_HOST): vol.All(ipaddress.ip_address, cv.string),
+                    vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
+                    vol.Required(CONF_PORT, default=DEFAULT_PORT): cv.positive_int,
+                    vol.Optional(CONF_TE10_MIN_AWAY_S, default=SENSOR_DICT[CONF_TE10_MIN_AWAY_S].factory_setting): cv.string
+                }
+            )
+        },
+    ),
+    extra=vol.ALLOW_EXTRA,
+)
+"""
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = [Platform.SENSOR]
+PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR]
 
 # The type alias needs to be suffixed with 'ConfigEntry'
 type ParmairConfigEntry = ConfigEntry[RuntimeData]
