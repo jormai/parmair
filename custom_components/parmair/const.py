@@ -1,6 +1,7 @@
 DOMAIN = "parmair"
 from enum import Enum
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.switch import SwitchDeviceClass
 from homeassistant.const import (
     UnitOfElectricCurrent,
     UnitOfElectricPotential,
@@ -170,7 +171,7 @@ SENSOR_DEFS = {
     "BST_MINTIME": [140,1, "Asetusarvo, Tehostuksen minimiaika (min) / LTO, CO2, 0-10V", "10", "5", "1", "60", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE],
     "CO2_MINTIME": [141,1, "Asetusarvo, Automaattinen kotona-poissa minimiaika", "10", "15", "1", "600", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE],
     "BST_TIME_LIMIT": [144,1, "Asetusarvo, Kosteus ja CO2-tehostusten maksimiaika", "10", "1440", "15", "1440", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE],
-    "UNIT_CONTROL_FO": [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SWITCH],
+    "UNIT_CONTROL_FO": [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", SwitchDeviceClass.SWITCH, None, "mdi:information-outline", READ_WRITE,Platform.SWITCH],
     "USERSTATECONTROL_FO": [181,1, "MAC 2 User state control from screen. 0=Off, 1=Away, 2=Home, 3=Boost, 4=Sauna, 5=Fireplace", "6", "1", "0", "5", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Off","Away","Home","Boost","Sauna","Fireplace"]],
     "DFRST_FI": [182,1, "Fiktiivinen indikointi, LTO:n sulatus päällä/pois", "6", "0", "0", "1", None, BinarySensorDeviceClass.RUNNING, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
     "FG50_EA_M": [183,10, "Fiktiivinen mittaus, LTO:n hyötysuhde", "6", "0.0", "0.0", "100.0", "%", SensorDeviceClass.POWER_FACTOR, "mdi:percent-circle", READ_ONLY],
