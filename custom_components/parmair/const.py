@@ -67,7 +67,7 @@ READ_WRITE = True
 
     
 class SensorSpec:
-    def __init__(self, id: int, multiplier: int, comment: str, group: str, factory_setting: str,  min_limit: str, max_limit: str, unit: str, sensor_device_class: SensorDeviceClass|BinarySensorDeviceClass, icon: str, writeable: bool, platform:Platform=Platform.BINARY_SENSOR):
+    def __init__(self, id: int, multiplier: int, comment: str, group: str, factory_setting: str,  min_limit: str, max_limit: str, unit: str, sensor_device_class: SensorDeviceClass|BinarySensorDeviceClass|None, icon: str, writeable: bool, platform:Platform=Platform.SENSOR,options:list[str]=None):
         self.id = id
         self.comment = comment
         self.group = group
@@ -80,6 +80,7 @@ class SensorSpec:
         self.icon = icon
         self.writeable = writeable
         self.platform = platform
+        self.options = options
 
     def __repr__(self):
         return f"DataRow({self.id}, {self.comment}, {self.group}, {self.multiplier}, {self.min_limit}, {self.max_limit}, {self.unit}, {self.sensor_device_class}, {self.icon}, {self.writeable})"
@@ -96,7 +97,7 @@ SENSOR_DEFS = {
     "MULTI_FW_VER": [14,100, "Multi24 firmware versio", "1", "2.00", "0.00", "100.00", None, None, "mdi:information-outline", READ_ONLY],
     "MULTI_SW_VER": [15,100, "Multi24 sovelluksen ohjelmaversio", "1", "2.00", "0.00", "100.00", None, None, "mdi:information-outline", READ_ONLY],
     "MULTI_BL_VER": [16,100, "Multi24 bootloaderin ohjelmaversio", "1", "2.00", "0.00", "100.00", None, None, "mdi:information-outline", READ_ONLY],
-    "TE01_M": [20,10, "Lämpötilamittaus, raitisilma", "2", "0.0", "-50.0", "120.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
+    "TE01_M": [20,10, "Lämpötilamittaus, raitisilma", "2", "0.0", "-50.0", "120.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_ONLY],
     "TE05_M": [21,10, "Lämpötilamittaus, LTO kylmäpiste", "2", "0.0", "-50.0", "120.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_ONLY],
     "TE10_M": [22,10, "Lämpötilamittaus, tuloilma", "2", "0.0", "-50.0", "120.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_ONLY],
     "TE31_M": [23,10, "Lämpötilamittaus, jäteilma", "2", "0.0", "-50.0", "120.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_ONLY],
@@ -118,27 +119,27 @@ SENSOR_DEFS = {
     "HP_RAD_O": [50,1, "Ohjaus, maalämpömoduli", "3", "0", "0", "1", None, None, "mdi:information-outline", READ_ONLY],
     "HOME_SPEED_S": [60,1, "Asetusarvo, Ilmanvaihtoasetus kotona-tilassa", "4", "3", "1", "5", None, None, "mdi:information-outline", READ_WRITE],
     "TE10_MIN_HOME_S": [61,10, "Asetusarvo, Tulolämpötilan minimiarvo kotona-tilassa", "4", "17.0", "10.0", "28.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
-    "TE10_CONTROL_MODE_S": [62,1, "Asetusarvo, lämpötilan säätö (ECO, Vakio)", "4", "0", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
+    "TE10_CONTROL_MODE_S": [62,1, "Asetusarvo, lämpötilan säätö (ECO, Vakio)", "4", "0", "0", "1", None, None, "mdi:information-outline", READ_WRITE, Platform.SELECT,["ECO","Vakio"]],
     "AWAY_SPEED_S": [63,1, "Asetusarvo, Ilmanvaihtoasetus poissa-tilassa", "4", "1", "1", "5", None, None, "mdi:information-outline", READ_WRITE],
     "TE10_MIN_AWAY_S": [64,10, "Asetusarvo, Tulolämpötilan minimiarvo poissa-tilassa", "4", "15.0", "10.0", "28.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
     "BOOST_SETTING_S": [65,1, "Asetusarvo, Tehostuksen nopeusasetus (nopeus 3-5)", "4", "4", "3", "5", None, None, "mdi:information-outline", READ_WRITE],
     "OVERP_AMOUNT_S": [68,1, "Asetusarvo, Puhaltimien ylipainetilanteen ylipaineen määrä", "4", "20", "0", "100", "%", SensorDeviceClass.POWER_FACTOR, "mdi:percent-circle", READ_WRITE],
-    "TP_ENABLE_S": [70,1, "Asetusarvo, Aikaohjelmakäyttö (0=ei käytössä, 1=käytössä)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
-    "AUTO_SUMMER_COOL_S": [71,1, "Asetus, Kesäviilennystoiminto (0=ei käytössä, 1=on, 2=automaatti)", "4", "2", "0", "2", None, None, "mdi:information-outline", READ_WRITE],
-    "AUTO_SUMMER_POWER_S": [72,1, "Asetus, Kesäkäytön tehomuutokset (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
+    "TP_ENABLE_S": [70,1, "Asetusarvo, Aikaohjelmakäyttö (0=ei käytössä, 1=käytössä)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Käytössä"]],
+    "AUTO_SUMMER_COOL_S": [71,1, "Asetus, Kesäviilennystoiminto (0=ei käytössä, 1=on, 2=automaatti)", "4", "2", "0", "2", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Käytössä","Automaatti"]],
+    "AUTO_SUMMER_POWER_S": [72,1, "Asetus, Kesäkäytön tehomuutokset (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
     "TE30_S": [73,10, "Asetusarvo, Poistolämpötila (Tavoiteltava huonelämpötila kesäkaudella)", "4", "18.0", "15.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
-    "AUTO_HEATER_ENABLE_S": [74,1, "Asetus, Jälkilämmitysvastus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
-    "AUTO_COLD_LOWSPEED_S": [75,1, "Asetus, Automaattinen tehonpudotus kylmissä olosuhteissa (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
+    "AUTO_HEATER_ENABLE_S": [74,1, "Asetus, Jälkilämmitysvastus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
+    "AUTO_COLD_LOWSPEED_S": [75,1, "Asetus, Automaattinen tehonpudotus kylmissä olosuhteissa (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
     "COLD_LOWSPEED_S": [76,10, "Asetus, Tehonpudostus pakkasella, pakkasraja", "4", "-15.0", "-25.0", "10.0", "°C", None, "mdi:temperature-celsius", READ_WRITE],
-    "AUTO_HUMIDITY_BOOST_S": [77,1, "Asetus, Automaattinen kosteustehostus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
+    "AUTO_HUMIDITY_BOOST_S": [77,1, "Asetus, Automaattinen kosteustehostus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
     "ME05_BOOST_SENSITIVITY": [78,1, "Asetusarvo, kosteustehostuksen herkkyys", "4", "1", "0", "2", None, None, "mdi:information-outline", READ_WRITE],
     "ME_BST_TE01_LIMIT": [79,10, "Asetusarvo, Kosteustehostuksen ulkolämpötilaraja", "4", "-10.0", "-15.0", "15.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
-    "AUTO_CO2_BOOST_S": [80,1, "Asetus, Automaattinen hiilidioksiditehostus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
-    "AUTO_HOMEAWAY_S": [81,1, "Asetus, Automaattinen kotona/poissa (CO2) (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
+    "AUTO_CO2_BOOST_S": [80,1, "Asetus, Automaattinen hiilidioksiditehostus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
+    "AUTO_HOMEAWAY_S": [81,1, "Asetus, Automaattinen kotona/poissa (CO2) (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
     "QE_HOME_S": [82,1, "Asetusarvo, CO2 kotona-raja", "4", "500", "100", "2000", "ppm", SensorDeviceClass.CO2, "mdi:molecule-co2", READ_WRITE],
     "QE_BOOST_S": [83,1, "Asetusarvo, CO2 tehostusraja (tehostuksen aloitus)", "4", "800", "100", "2000", "ppm", SensorDeviceClass.CO2, "mdi:molecule-co2", READ_WRITE],
-    "FILTER_INTERVAL_S": [90,1, "Asetusarvo, Suodattimien vaihtoväli (0=3kk, 1=4kk, 2=6kk)", "4", "0", "0", "2", None, None, "mdi:information-outline", READ_WRITE],
-    "HP_RAD_MODE": [91,1, "Asetusarvo, maalämpömoduulin toiminta (0=Off, 1=On, 2=Auto)", "4", "2", "0", "2", None, None, "mdi:information-outline", READ_WRITE],
+    "FILTER_INTERVAL_S": [90,1, "Asetusarvo, Suodattimien vaihtoväli (0=3kk, 1=4kk, 2=6kk)", "4", "0", "0", "2", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["3kk","4kk","6kk"]],
+    "HP_RAD_MODE": [91,1, "Asetusarvo, maalämpömoduulin toiminta (0=Off, 1=On, 2=Auto)", "4", "2", "0", "2", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Off","On","Auto"]],
     "HP_RAD_WINTER": [92,10, "Asetusarvo, maalämpömoduulin käyttöraja talvi", "4", "0.0", "-30.0", "15.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
     "HP_RAD_SUMMER": [93,10, "Asetusarvo, maalämpömoduulin käyttöraja kesä", "4", "15.0", "0.0", "40.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
     "HEATING_SEASON_AVERAGE": [94,10, "Asetusarvo, Lämmityskausi (24h raitis lämpötila)", "4", "14.0", "6.0", "50.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
@@ -162,18 +163,18 @@ SENSOR_DEFS = {
     "SENSOR_TE_COR": [120,10, "Lämpötilan korjaus", "10", "0.0", "-5.0", "5.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
     "SENSOR_ME_COR": [121,1, "Kosteuden korjaus", "10", "0", "-20", "20", "%", SensorDeviceClass.MOISTURE, "mdi:water-percent", READ_WRITE],
     "SENSOR_CO2_COR": [122,1, "Hiilidioksidin korjaus", "10", "0", "-500", "500", "ppm", SensorDeviceClass.CO2, "mdi:molecule-co2", READ_WRITE],
-    "HEATPUMP_RADIATOR_ENABLE": [124,1, "Maalämpöpatteri (0=Ei asennettu, 1=Asennettu)", "10", "0", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
+    "HEATPUMP_RADIATOR_ENABLE": [124,1, "Maalämpöpatteri (0=Ei asennettu, 1=Asennettu)", "10", "0", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei asennettu","Asennettu"]],
     "VENT_MACHINE": [125,1, "IV-koneen tyyppikoodi", "10", "1", "-1000", "1000", None, None, "mdi:information-outline", READ_ONLY],
     "TE10_MIN_S": [129,10, "Asetusarvo, Tulolämpötilan minimiarvo jonka käyttäjä voi asettaa", "10", "10.0", "10.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
     "TE10_BASE_S": [137,10, "Asetusarvo, Tulolämpötilan perusasetusarvo, josta voidaan potikalla poikkeuttaa.", "10", "17.0", "15.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
     "BST_MINTIME": [140,1, "Asetusarvo, Tehostuksen minimiaika (min) / LTO, CO2, 0-10V", "10", "5", "1", "60", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE],
     "CO2_MINTIME": [141,1, "Asetusarvo, Automaattinen kotona-poissa minimiaika", "10", "15", "1", "600", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE],
     "BST_TIME_LIMIT": [144,1, "Asetusarvo, Kosteus ja CO2-tehostusten maksimiaika", "10", "1440", "15", "1440", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE],
-    "UNIT_CONTROL_FO": [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE],
-    "USERSTATECONTROL_FO": [181,1, "MAC 2 User state control from screen. 0=Off, 1=Away, 2=Home, 3=Boost, 4=Sauna, 5=Fireplace", "6", "1", "0", "5", None, None, "mdi:information-outline", READ_WRITE],
+    "UNIT_CONTROL_FO": [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SWITCH],
+    "USERSTATECONTROL_FO": [181,1, "MAC 2 User state control from screen. 0=Off, 1=Away, 2=Home, 3=Boost, 4=Sauna, 5=Fireplace", "6", "1", "0", "5", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Off","Away","Home","Boost","Sauna","Fireplace"]],
     "DFRST_FI": [182,1, "Fiktiivinen indikointi, LTO:n sulatus päällä/pois", "6", "0", "0", "1", None, BinarySensorDeviceClass.RUNNING, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
     "FG50_EA_M": [183,10, "Fiktiivinen mittaus, LTO:n hyötysuhde", "6", "0.0", "0.0", "100.0", "%", SensorDeviceClass.POWER_FACTOR, "mdi:percent-circle", READ_ONLY],
-    "FILTER_STATE_FI": [184,1, "Fiktiivinen asetus, Suodattimen kunto (0=Idle, 1=Kuittaa vaihto, 2=Muistutushälytys)", "6", "0", "0", "2", None, None, "mdi:information-outline", READ_WRITE],
+    "FILTER_STATE_FI": [184,1, "Fiktiivinen asetus, Suodattimen kunto (0=Idle, 1=Kuittaa vaihto, 2=Muistutushälytys)", "6", "0", "0", "2", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Idle","Kuittaa vaihto","Muistutushälytys"]],
     "SENSOR_STATUS": [185,1, "Yhdistelmäanturin tila (1=Ok, 0=Initoimatta, -1=Modbuskommunikaatiovirhe, -2=Data puuttuu)", "6", "0", "-2", "1", None, None, "mdi:information-outline", READ_ONLY],
     "SUMMER_MODE_I": [189,1, "Tilatieto, Kausi. 0=Talvi, 1=Väli, 2=Kesä", "6", "0", "0", "2", None, None, "mdi:information-outline", READ_ONLY],
     "SUMMER_POWER_CHANGE_FM": [190,1, "Kesätilanteen tehonsäätö", "6", "0", "-1", "1", None, None, "mdi:information-outline", READ_ONLY],
