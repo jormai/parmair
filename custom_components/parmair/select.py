@@ -73,6 +73,7 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
         self._device_hwver = self._coordinator.api.data["MULTI_FW_VER"]
         self._attr_options = sensor_data[1].options
         self._current_index = 0
+        self._current_index = int(self._coordinator.api.data[self._key])
 
     @property
     def current_option(self) -> str:
@@ -125,6 +126,7 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
     @property
     def entity_category(self):
         """Return the sensor entity_category."""
+        return None
         if self._spec.sensor_device_class is None:
             return EntityCategory.DIAGNOSTIC
         else:

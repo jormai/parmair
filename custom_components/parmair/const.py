@@ -184,18 +184,18 @@ SENSOR_DEFS = {
     "ME05_AVG_FM": [192,10, "Fiktiivinen mittaus, LTO:n kosteusmittauksen 24h keskiarvo", "6", "0.0", "0.0", "100.0", "%", SensorDeviceClass.MOISTURE, "mdi:water-percent", READ_ONLY],
     "PWR_LIMIT_FY": [199,10, "Fiktiivinen säätö, puhaltimien tehonrajoitus", "6", "0.0", "0.0", "100.0", "%", SensorDeviceClass.POWER_FACTOR, "mdi:percent-circle", READ_ONLY],
     "TE01_AVG_FM": [213,10, "Ulkolämpötilan vrk keskiarvo", "6", "0.0", "-50.0", "50.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_ONLY],
-    "TE01_FA": [220,1, "Vikahälytys, raitisilman lämpötila / anturivika", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TE10_FA": [221,1, "Vikahälytys, tulolämpötila / anturivika", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TE05_FA": [222,1, "Vikahälytys, tulolämpötila LTO:n jälkeen / anturivika", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TE30_FA": [223,1, "Vikahälytys, poistolämpötila / anturivika", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TE31_FA": [224,1, "Vikahälytys, jäteilman lämpötila / anturivika", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "ME05_FA": [225,1, "Vikahälytys, LTO:n kosteus / anturivika", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TF10_CA": [226,1, "Ristiriitahälytys, tulopuhallin", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "PF30_CA": [227,1, "Ristiriitahälytys, poistopuhallin", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TE10_HA": [228,1, "Ylärajahälytys, tulolämpötila", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TE30_HA": [229,1, "Ylärajahälytys, poistolämpötila", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "TE10_LA": [230,1, "Alarajahälytys, tulolämpötila", "7", "0", "0", "11", None, None, "mdi:information-outline", READ_ONLY],
-    "FILTER_FA": [240,1, "Suodattimen hälytys", "7", "0", "0", "1", None, None, "mdi:information-outline", READ_ONLY]
+    "TE01_FA": [220,1, "Vikahälytys, raitisilman lämpötila / anturivika", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TE10_FA": [221,1, "Vikahälytys, tulolämpötila / anturivika", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TE05_FA": [222,1, "Vikahälytys, tulolämpötila LTO:n jälkeen / anturivika", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TE30_FA": [223,1, "Vikahälytys, poistolämpötila / anturivika", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TE31_FA": [224,1, "Vikahälytys, jäteilman lämpötila / anturivika", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "ME05_FA": [225,1, "Vikahälytys, LTO:n kosteus / anturivika", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TF10_CA": [226,1, "Ristiriitahälytys, tulopuhallin", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "PF30_CA": [227,1, "Ristiriitahälytys, poistopuhallin", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TE10_HA": [228,1, "Ylärajahälytys, tulolämpötila", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TE30_HA": [229,1, "Ylärajahälytys, poistolämpötila", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "TE10_LA": [230,1, "Alarajahälytys, tulolämpötila", "7", "0", "0", "11", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
+    "FILTER_FA": [240,1, "Suodattimen hälytys", "7", "0", "0", "1", None, BinarySensorDeviceClass.PROBLEM, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR]
 }
 
 SENSOR_DICT = {key: SensorSpec(*values) for key, values in SENSOR_DEFS.items()}

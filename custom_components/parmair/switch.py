@@ -118,10 +118,7 @@ class ParmairSwitch(CoordinatorEntity, SwitchEntity):
     @property
     def entity_category(self):
         """Return the sensor entity_category."""
-        if self._spec.sensor_device_class is None:
-            return EntityCategory.DIAGNOSTIC
-        else:
-            return None
+        return None
 
     @property
     def native_value(self):
