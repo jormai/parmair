@@ -129,7 +129,7 @@ SENSOR_DEFS = {
     "TP_ENABLE_S": [70,1, "Asetusarvo, Aikaohjelmakäyttö (0=ei käytössä, 1=käytössä)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Käytössä"]],
     "AUTO_SUMMER_COOL_S": [71,1, "Asetus, Kesäviilennystoiminto (0=ei käytössä, 1=on, 2=automaatti)", "4", "2", "0", "2", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Käytössä","Automaatti"]],
     "AUTO_SUMMER_POWER_S": [72,1, "Asetus, Kesäkäytön tehomuutokset (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
-    "TE30_S": [73,10, "Asetusarvo, Poistolämpötila (Tavoiteltava huonelämpötila kesäkaudella)", "4", "18.0", "15.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE],
+    "TE30_S": [73,10, "Asetusarvo, Poistolämpötila (Tavoiteltava huonelämpötila kesäkaudella)", "4", "18.0", "15.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE, Platform.NUMBER],
     "AUTO_HEATER_ENABLE_S": [74,1, "Asetus, Jälkilämmitysvastus (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
     "AUTO_COLD_LOWSPEED_S": [75,1, "Asetus, Automaattinen tehonpudotus kylmissä olosuhteissa (0=ei käytössä, 1=automaatti)", "4", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei käytössä","Automaatti"]],
     "COLD_LOWSPEED_S": [76,10, "Asetus, Tehonpudostus pakkasella, pakkasraja", "4", "-15.0", "-25.0", "10.0", "°C", NumberDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE, Platform.NUMBER],

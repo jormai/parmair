@@ -81,6 +81,15 @@ class ParmairNumber(NumberEntity):
             writeable=sensor_data[1].writeable,
             device_class=sensor_data[1].sensor_device_class
         )
+        """
+        self._device_name = coordinator.api.name
+        self._device_host = coordinator.api.host
+        self._device_model = coordinator.api.data["VENT_MACHINE"]
+        self._device_manufact = coordinator.data["comm_manufact"]
+        self._device_sn = coordinator.api.data["VENT_MACHINE"]
+        self._device_swver = coordinator.api.data["MULTI_SW_VER"]
+        self._device_hwver = coordinator.api.data["MULTI_FW_VER"]
+        """
     @property
     def native_value(self):
         """Return the state of the sensor."""
