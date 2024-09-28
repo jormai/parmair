@@ -9,6 +9,7 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.const import Platform
 
@@ -32,18 +33,18 @@ def add_sensor_defs(
             )
 
 async def async_setup_entry(
-    hass: HomeAssistant, config_entry: ParmairConfigEntry, async_add_entities
+    hass: HomeAssistant, config_entry: ParmairConfigEntry, async_add_entities: AddEntitiesCallback
 ):
     """Sensor Platform setup."""
 
     # Get handler to coordinator from config
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
 
-    _LOGGER.debug("(switch) Name: %s", config_entry.data.get(CONF_NAME))
-    _LOGGER.debug("(switch) FW Version: %s", coordinator.api.data["MULTI_FW_VER"])
-    _LOGGER.debug("(switch) SW Version: %s", coordinator.api.data["MULTI_SW_VER"])
-    _LOGGER.debug("(switch) BL Version: %s", coordinator.api.data["MULTI_BL_VER"])
-    _LOGGER.debug("(switch) Vent machine type code #: %s", coordinator.api.data["VENT_MACHINE"])
+    _LOGGER.debug("(select) Name: %s", config_entry.data.get(CONF_NAME))
+    _LOGGER.debug("(select) FW Version: %s", coordinator.api.data["MULTI_FW_VER"])
+    _LOGGER.debug("(select) SW Version: %s", coordinator.api.data["MULTI_SW_VER"])
+    _LOGGER.debug("(select) BL Version: %s", coordinator.api.data["MULTI_BL_VER"])
+    _LOGGER.debug("(select) Vent machine type code #: %s", coordinator.api.data["VENT_MACHINE"])
 
     sensor_list = []
     add_sensor_defs(coordinator, config_entry, sensor_list)

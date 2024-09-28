@@ -47,7 +47,12 @@ CONFIG_SCHEMA = vol.Schema(
 """
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SELECT, Platform.SWITCH]
+PLATFORMS: list[Platform] = [
+    Platform.SENSOR, 
+    Platform.BINARY_SENSOR, 
+    Platform.SELECT, 
+    Platform.SWITCH,
+    Platform.NUMBER]
 
 # The type alias needs to be suffixed with 'ConfigEntry'
 type ParmairConfigEntry = ConfigEntry[RuntimeData]

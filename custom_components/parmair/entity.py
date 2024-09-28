@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
-from homeassistant.const import CONF_HOST
+from homeassistant.components.sensor.const import SensorStateClass
+from homeassistant.const import CONF_HOST, EntityCategory
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DEFAULT_NAME, DOMAIN
@@ -12,8 +14,6 @@ from .coordinator import ParmairCoordinator
 
 class ParmairEntity(CoordinatorEntity[ParmairCoordinator]):
     """Representation of a Parmair entity."""
-
-    _attr_has_entity_name = True
 
     def __init__(self, name: str, coordinator: ParmairCoordinator) -> None:
         """Initialize a Parmair entity."""
@@ -29,3 +29,12 @@ class ParmairEntity(CoordinatorEntity[ParmairCoordinator]):
             sw_version=self.coordinator.data.sw_version,
             configuration_url=f"http://{self.coordinator.config_entry.data[CONF_HOST]}",
         )
+
+    class ParmairDescriptionEntity(ParmairEntity):
+    """Base class for Parmair entities that use an entity description."""
+
+    def __init__(self, description: EntityDescription) -> None:
+        """Initialize the entity."""
+        self.entity_description = description
+        super().__init__()
+        self._attr_unique_id = f"parmair-{description.key}"
