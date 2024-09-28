@@ -67,6 +67,7 @@ class ParmairNumber(NumberEntity):
         _LOGGER.debug(f"ParmairNumber {sensor_data[0]}")
         #super().__init__(coordinator)
         self.entity_description = ParmairNumberDescription(
+            name = sensor_data[1].comment,
             key=sensor_data[0],
             translation_key=sensor_data[0],
             native_step=1,
@@ -80,7 +81,19 @@ class ParmairNumber(NumberEntity):
             writeable=sensor_data[1].writeable,
             device_class=sensor_data[1].sensor_device_class
         )
-    
+    @property
+    def native_value(self):
+        """Return the state of the sensor."""
+        if self.entity_description.key not in self.entity_description.coordinator.api.data:
+            return None
+        if (svalue := self.entity_description.coordinator.api.data[self.entity_description.key]) is not None:
+            #if self.entity_description.multiplier > 1:
+            #    value = float(svalue)
+            #    value = value / self.entity_description.multiplier
+            #    return value
+            return int(svalue)
+        return None
+            
     @callback
     def _handle_coordinator_update(self) -> None:
         """Fetch new state data for the sensor."""
@@ -95,9 +108,7 @@ class ParmairNumber(NumberEntity):
     @callback
     def _async_update_attrs(self) -> None:
         """Update attrs from device."""
-        if (value := self._coordinator.api.data[self.entity_description.key]) is not None:
-            value = value / self.entity_description.multiplier
-            self._attr_native_value = float(value)
+        self._attr_native_value = self.native_value
 
     async def async_set_native_value(self, value: float) -> None:
         """Set the value."""

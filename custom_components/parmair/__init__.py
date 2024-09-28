@@ -84,6 +84,7 @@ async def async_update_device_registry(
     """Manual device registration."""
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
     device_registry = dr.async_get(hass)
+    """
     device_registry.async_get_or_create(
         config_entry_id=config_entry.entry_id,
         hw_version=None,
@@ -92,10 +93,11 @@ async def async_update_device_registry(
         manufacturer=coordinator.api.data["comm_manufact"],
         model=coordinator.api.data["VENT_MACHINE"],
         name=config_entry.data.get(CONF_NAME),
-        serial_number=coordinator.api.data["comm_sernum"],
+        serial_number="1", #coordinator.api.data["comm_sernum"],
         sw_version=coordinator.api.data["MULTI_SW_VER"],
         via_device=None,
     )
+    """
 
 
 async def async_setup_entry(
