@@ -55,16 +55,18 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         """Class Initializitation."""
         super().__init__(coordinator)
         self._coordinator = coordinator
-        self._name = sensor_data[1].comment
         self._key = sensor_data[0]
-        self._spec = sensor_data[1]
-        self._device_name = self._coordinator.api.name
-        self._device_host = self._coordinator.api.host
-        self._device_model = self._coordinator.api.data["VENT_MACHINE"]
-        self._device_manufact = self._coordinator.api.data["comm_manufact"]
-        self._device_sn = self._coordinator.api.data["VENT_MACHINE"]
-        self._device_swver = self._coordinator.api.data["MULTI_SW_VER"]
-        self._device_hwver = self._coordinator.api.data["MULTI_FW_VER"]
+        self._attr_name = sensor_data[1].comment
+        self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
+        self._attr_translation_key = self._key
+        spec = sensor_data[1]
+        self._attr_unit_of_measurement =  spec.unit
+        self._attr_icon = spec.icon
+        self._attr_device_class = spec.sensor_device_class
+        self._attr_entity_category = EntityCategory.DIAGNOSTIC if spec.sensor_device_class is None else None
+        self._attr_should_poll = False
+        # To link this entity the Parmair device
+        self._attr_device_info = {"identifiers": {(DOMAIN,  config_entry.unique_id)}}
 
 
     @callback
@@ -81,79 +83,10 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
             )
 
     @property
-    def has_entity_name(self):
-        """Return the name state."""
-        return True
-
-    @property
-    def name(self):
-        """Return the name."""
-        return f"{self._name}"
-
-    @property
-    def native_unit_of_measurement(self):
-        """Return the unit of measurement."""
-        return self._spec.unit
-
-    @property
-    def icon(self):
-        """Return the sensor icon."""
-        return self._spec.icon
-
-    @property
-    def device_class(self):
-        """Return the sensor device_class."""
-        return self._spec.sensor_device_class
-
-    @property
-    def state_class(self):
-        """Return the sensor state_class."""
-        if self._spec.group == "2":
-            return SensorStateClass.MEASUREMENT
-        return None
-
-    @property
-    def entity_category(self):
-        """Return the sensor entity_category."""
-        if self._spec.sensor_device_class is None:
-            return EntityCategory.DIAGNOSTIC
-        else:
-            return None
-
-    @property
     def native_value(self):
         """Return the state of the sensor."""
         if self._key in self._coordinator.api.data:
             return self._coordinator.api.data[self._key]
         else:
             return None
-
-    @property
-    def state_attributes(self) -> dict[str, Any] | None:
-        """Return the attributes."""
-        return None
-
-    @property
-    def should_poll(self) -> bool:
-        """No need to poll. Coordinator notifies entity of updates."""
-        return False
-
-    @property
-    def unique_id(self):
-        """Return a unique ID to use for this entity."""
-        return f"{self._device_model}_{self._key}"
-
-    @property
-    def device_info(self):
-        """Return device specific attributes."""
-        return {
-            "configuration_url": f"http://{self._device_host}",
-            "hw_version": None,
-            "identifiers": {(DOMAIN, self._device_sn)},
-            "manufacturer": self._device_manufact,
-            "model": self._device_model,
-            "name": self._device_name,
-            "serial_number": self._device_sn,
-            "sw_version": self._device_swver,
-            "via_device": None,
-        }
+            

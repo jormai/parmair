@@ -52,7 +52,9 @@ PLATFORMS: list[Platform] = [
     Platform.BINARY_SENSOR, 
     Platform.SELECT, 
     Platform.SWITCH,
-    Platform.NUMBER]
+    Platform.NUMBER,
+    Platform.CLIMATE
+    ]
 
 # The type alias needs to be suffixed with 'ConfigEntry'
 type ParmairConfigEntry = ConfigEntry[RuntimeData]
@@ -84,20 +86,20 @@ async def async_update_device_registry(
     """Manual device registration."""
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
     device_registry = dr.async_get(hass)
-    """
+
     device_registry.async_get_or_create(
         config_entry_id=config_entry.entry_id,
         hw_version=None,
         configuration_url=f"http://{config_entry.data.get(CONF_HOST)}",
-        identifiers={(DOMAIN, coordinator.api.data["comm_sernum"])},
+        identifiers={(DOMAIN, config_entry.unique_id)},
         manufacturer=coordinator.api.data["comm_manufact"],
         model=coordinator.api.data["VENT_MACHINE"],
         name=config_entry.data.get(CONF_NAME),
-        serial_number="1", #coordinator.api.data["comm_sernum"],
+        #serial_number="1", #coordinator.api.data["comm_sernum"],
         sw_version=coordinator.api.data["MULTI_SW_VER"],
         via_device=None,
     )
-    """
+
 
 
 async def async_setup_entry(
@@ -107,11 +109,12 @@ async def async_setup_entry(
     if hass.data.get(DOMAIN) is None:
         hass.data.setdefault(DOMAIN, {})
         _LOGGER.info(STARTUP_MESSAGE)
-    _LOGGER.debug(f"Setup config_entry for {DOMAIN}")
+    _LOGGER.debug(f"Setup config_entry for {DOMAIN} uid {config_entry.unique_id}")
 
     # Initialise the coordinator that manages data updates from your api.
     # This is defined in coordinator.py
     coordinator = ParmairCoordinator(hass, config_entry)
+    
 
     # If the refresh fails, async_config_entry_first_refresh() will
     # raise ConfigEntryNotReady and setup will try again later

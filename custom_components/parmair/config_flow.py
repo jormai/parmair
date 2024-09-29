@@ -4,6 +4,7 @@
 import ipaddress
 import logging
 import re
+import uuid
 
 import voluptuous as vol
 from homeassistant import config_entries
@@ -83,7 +84,7 @@ class ParmairConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self.api_data = await self.api.async_get_data()
             _LOGGER.debug("API Client: get data")
             _LOGGER.debug(f"API Client Data: {self.api_data}")
-            return f"{self.api.data['comm_sernum']}"
+            return True
                       
         except ConnectionException as connerr:
             _LOGGER.error(
@@ -108,11 +109,11 @@ class ParmairConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             elif not host_valid(user_input[CONF_HOST]):
                 errors[CONF_HOST] = "invalid Host IP"
             else:
-                uid = await self.test_connection(
+                connected = await self.test_connection(
                     name, host, port, slave_id, base_addr, scan_interval
                 )
-                if uid is not False:
-                    _LOGGER.debug(f"Device unique id: {uid}")
+                if connected is not False:
+                    uid =  f"{DOMAIN}-{host}"
                     await self.async_set_unique_id(uid)
                     self._abort_if_unique_id_configured()
                     return self.async_create_entry(

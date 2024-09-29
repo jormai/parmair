@@ -16,18 +16,11 @@ from homeassistant.components.number.const import NumberDeviceClass
 from homeassistant.const import CONF_NAME, EntityCategory, Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import ParmairConfigEntry
-from .const import SENSOR_DICT, SensorSpec
+from .const import DOMAIN, SENSOR_DICT, SensorSpec
 
-
-
-@dataclass(frozen=True, kw_only=True)
-class ParmairNumberDescription(NumberEntityDescription):
-    """Class describing Parmair sensor entities."""
-    multiplier: int
-    coordinator: ParmairCoordinator
-    writeable: bool
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -58,48 +51,37 @@ async def async_setup_entry(
     add_sensor_defs(coordinator, config_entry, sensor_list)
     async_add_entities(sensor_list)
 
-class ParmairNumber(NumberEntity):
+class ParmairNumber(CoordinatorEntity, NumberEntity):
     """Parmair number."""
-    entity_description: ParmairNumberDescription
-
+    
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry, sensor_data:tuple[str,SensorSpec]):
         """Class Initializitation."""
         _LOGGER.debug(f"ParmairNumber {sensor_data[0]}")
-        #super().__init__(coordinator)
-        self.entity_description = ParmairNumberDescription(
-            name = sensor_data[1].comment,
-            key=sensor_data[0],
-            translation_key=sensor_data[0],
-            native_step=1,
-            native_min_value=float(sensor_data[1].min_limit),
-            native_max_value=float(sensor_data[1].max_limit),
-            entity_category=EntityCategory.CONFIG if sensor_data[1].writeable==True else EntityCategory.DIAGNOSTIC,
-            native_unit_of_measurement=sensor_data[1].unit,
-            multiplier=int(sensor_data[1].multiplier),
-            mode=NumberMode.BOX,
-            coordinator=coordinator,
-            writeable=sensor_data[1].writeable,
-            device_class=sensor_data[1].sensor_device_class
-        )
-        """
-        self._device_name = coordinator.api.name
-        self._device_host = coordinator.api.host
-        self._device_model = coordinator.api.data["VENT_MACHINE"]
-        self._device_manufact = coordinator.data["comm_manufact"]
-        self._device_sn = coordinator.api.data["VENT_MACHINE"]
-        self._device_swver = coordinator.api.data["MULTI_SW_VER"]
-        self._device_hwver = coordinator.api.data["MULTI_FW_VER"]
-        """
+        super().__init__(coordinator)
+        self._coordinator = coordinator
+        self._key = sensor_data[0]
+        self._spec = sensor_data[1]
+        self._attr_name = sensor_data[1].comment
+        self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
+        self._attr_translation_key = self._key
+        self._attr_unit_of_measurement =  self._spec.unit
+        self._attr_icon = self._spec.icon
+        self._attr_device_class = self._spec.sensor_device_class
+        self._attr_entity_category = EntityCategory.DIAGNOSTIC if self._spec.sensor_device_class is None else None
+        self._attr_device_info = {"identifiers": {(DOMAIN,  config_entry.unique_id)}}
+        self._attr_should_poll = False
+        self._attr_native_step = 1
+        self._attr_native_min_value = float(sensor_data[1].min_limit)
+        self._attr_native_max_value=float(sensor_data[1].max_limit)
+        self._attr_mode=NumberMode.BOX
+
+
     @property
     def native_value(self):
         """Return the state of the sensor."""
-        if self.entity_description.key not in self.entity_description.coordinator.api.data:
+        if self._key not in self._coordinator.api.data:
             return None
-        if (svalue := self.entity_description.coordinator.api.data[self.entity_description.key]) is not None:
-            #if self.entity_description.multiplier > 1:
-            #    value = float(svalue)
-            #    value = value / self.entity_description.multiplier
-            #    return value
+        if (svalue := self._coordinator.api.data[self._key]) is not None:
             return int(svalue)
         return None
             
@@ -114,10 +96,6 @@ class ParmairNumber(NumberEntity):
                 "_handle_coordinator_update: sensors state written to state machine"
             )
 
-    @callback
-    def _async_update_attrs(self) -> None:
-        """Update attrs from device."""
-        self._attr_native_value = self.native_value
 
     async def async_set_native_value(self, value: float) -> None:
         """Set the value."""
