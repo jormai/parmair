@@ -102,7 +102,7 @@ CONF_UNIT_CONTROL_FO="UNIT_CONTROL_FO"
 # note, id must be ascending    
 SENSOR_DEFS = {
     "ACK_ALARMS": [3,1, "Hälytysten kuittaus (0=ODOTETAAN KUITTAUSTA, 1=OK/KUITTAA)", "1", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Odotetaan kuittausta","OK/Kuittaa"]],
-    "ALARM_COUNT": [4,1, "Aktiivisten hälytysten määrä", "1", "0", "0", "100", None, None, "mdi:information-outline", READ_ONLY,Platform.NUMBER],
+    "ALARM_COUNT": [4,1, "Aktiivisten hälytysten määrä", "1", "0", "0", "100", None, None, "mdi:information-outline", READ_ONLY],
     "TIME_YEAR": [9,1, "Vuosi", "1", "2023", "2000", "3000", None, None, "mdi:information-outline", READ_WRITE],
     "TIME_MONTH": [10,1, "Kuukausi", "1", "8", "1", "12", None, None, "mdi:information-outline", READ_WRITE],
     "TIME_DAY": [11,1, "Päivä", "1", "1", "1", "31", None, None, "mdi:information-outline", READ_WRITE],
@@ -178,10 +178,10 @@ SENSOR_DEFS = {
     "SENSOR_ME_COR": [121,1, "Kosteuden korjaus", "10", "0", "-20", "20", "%", SensorDeviceClass.MOISTURE, "mdi:water-percent", READ_WRITE, Platform.NUMBER],
     "SENSOR_CO2_COR": [122,1, "Hiilidioksidin korjaus", "10", "0", "-500", "500", "ppm", SensorDeviceClass.CO2, "mdi:molecule-co2", READ_WRITE, Platform.NUMBER],
     "HEATPUMP_RADIATOR_ENABLE": [124,1, "Maalämpöpatteri (0=Ei asennettu, 1=Asennettu)", "10", "0", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Ei asennettu","Asennettu"]],
-    "VENT_MACHINE": [125,1, "IV-koneen tyyppikoodi", "10", "1", "-1000", "1000", None, None, "mdi:information-outline", READ_ONLY, Platform.NUMBER],
+    "VENT_MACHINE": [125,1, "IV-koneen tyyppikoodi", "10", "1", "-1000", "1000", None, None, "mdi:information-outline", READ_ONLY],
     "TE10_MIN_S": [129,10, "Asetusarvo, Tulolämpötilan minimiarvo jonka käyttäjä voi asettaa", "10", "10.0", "10.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE, Platform.NUMBER],
     "TE10_BASE_S": [137,10, "Asetusarvo, Tulolämpötilan perusasetusarvo, josta voidaan potikalla poikkeuttaa.", "10", "17.0", "15.0", "25.0", "°C", SensorDeviceClass.TEMPERATURE, "mdi:temperature-celsius", READ_WRITE, Platform.NUMBER],
-    "BST_MINTIME": [140,1, "Asetusarvo, Tehostuksen minimiaika (min) / LTO, CO2, 0-10V", "10", "5", "1", "60", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE, Platform.NUMBER],
+    "BST_MINTIME":  [140,1, "Asetusarvo, Tehostuksen minimiaika (min) / LTO, CO2, 0-10V", "10", "5", "1", "60", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE, Platform.NUMBER],
     "CO2_MINTIME": [141,1, "Asetusarvo, Automaattinen kotona-poissa minimiaika", "10", "15", "1", "600", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE, Platform.NUMBER],
     "BST_TIME_LIMIT": [144,1, "Asetusarvo, Kosteus ja CO2-tehostusten maksimiaika", "10", "1440", "15", "1440", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE, Platform.NUMBER],
     CONF_UNIT_CONTROL_FO: [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", SwitchDeviceClass.SWITCH, None, "mdi:information-outline", READ_WRITE,Platform.SWITCH],

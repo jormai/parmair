@@ -99,7 +99,13 @@ class ParmairNumber(CoordinatorEntity, NumberEntity):
 
     async def async_set_native_value(self, value: float) -> None:
         """Set the value."""
-        if self.entity_description.writeable == False:
+        if self._spec.writeable == False:
             return
-        _LOGGER.debug(f"TODO: Set value for {self.entity_description.key} {value}x{self.entity_description.multiplier}")
-        #setattr(self._device, self.entity_description.key, int(value))
+        
+        reg_value = int(value*self._spec.multiplier)
+        result = await self._coordinator.api.async_write_data(self._spec.id, reg_value)
+        _LOGGER.debug(f"Setting value for {self._key}, result {result}")
+        if result == True:
+            self._coordinator.api.data[self._key] = f"{value}"
+
+

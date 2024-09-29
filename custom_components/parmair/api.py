@@ -169,7 +169,6 @@ class ParmairAPI:
                 result = await self._hass.async_add_executor_job(
                     self.read_modbus_registers
                 )
-                self.close()
                 _LOGGER.debug("End Get data")
                 if result:
                     _LOGGER.debug("Get Data Result: valid")
@@ -186,6 +185,8 @@ class ParmairAPI:
         except ModbusException as modbus_error:
             _LOGGER.debug(f"Async Get Data modbus_error: {modbus_error}")
             raise ModbusError() from modbus_error
+        finally:
+            self.close()
     
 
     def read_modbus_registers(self)-> bool:
@@ -234,3 +235,31 @@ class ParmairAPI:
             raise ModbusError() from modbus_error
         return result
 
+    async def async_write_data(self, register_address: int, value: int) -> bool:
+        """Write Modbus register."""
+        try:
+            if self.connect():
+                _LOGGER.debug(
+                    "Start Get data (Slave ID: %s - Base Address: %s)",
+                    self._slave_id,
+                    self._base_addr,
+                )
+                response = self._client.write_register(self._base_addr+register_address, value)
+                # Check if the write was successful
+                if response.isError():
+                    _LOGGER.debug(f"Error writing to register {register_address}")
+                    return False
+                else:
+                    _LOGGER.debug(f"Successfully wrote {value} to register {register_address}")
+                    return True
+            else:
+                _LOGGER.debug("Get Data failed: client not connected")
+        except ConnectionException as connect_error:
+            _LOGGER.debug(f"Async Get Data connect_error: {connect_error}")
+            raise ConnectionError() from connect_error
+        except ModbusException as modbus_error:
+            _LOGGER.debug(f"Async Get Data modbus_error: {modbus_error}")
+            raise ModbusError() from modbus_error
+        finally:
+            # Close the connection
+            self.close()        
