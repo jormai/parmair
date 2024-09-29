@@ -196,6 +196,7 @@ class ParmairAPI:
         last_value = list(SENSOR_DICT.values())[-1].id
         first_value = list(SENSOR_DICT.values())[0].id
         it = iter(SENSOR_DICT.keys())
+        key = next(it)
         result = True
         try:
             loop = 0
@@ -211,7 +212,7 @@ class ParmairAPI:
                 _LOGGER.debug(f"Read registers from {start_address} to {start_address + count - 1}: {read_data} : {read_data.registers}")
                 
                 decoder = BinaryPayloadDecoder.fromRegisters(read_data.registers, byteorder=Endian.BIG)
-                key = next(it)
+                
                 try:
                     for i in range(0, count):
                         register = first_value + loop * count + i

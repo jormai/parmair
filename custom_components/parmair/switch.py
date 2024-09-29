@@ -40,10 +40,6 @@ async def async_setup_entry(
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
 
     _LOGGER.debug("(switch) Name: %s", config_entry.data.get(CONF_NAME))
-    _LOGGER.debug("(switch) FW Version: %s", coordinator.api.data["MULTI_FW_VER"])
-    _LOGGER.debug("(switch) SW Version: %s", coordinator.api.data["MULTI_SW_VER"])
-    _LOGGER.debug("(switch) BL Version: %s", coordinator.api.data["MULTI_BL_VER"])
-    _LOGGER.debug("(switch) Vent machine type code #: %s", coordinator.api.data["VENT_MACHINE"])
 
     sensor_list = []
     add_sensor_defs(coordinator, config_entry, sensor_list)
@@ -60,6 +56,7 @@ class ParmairSwitch(CoordinatorEntity, SwitchEntity):
         """Class Initializitation."""
         super().__init__(coordinator)
         self._coordinator = coordinator
+        self._spec = sensor_data[1]
         self._key = sensor_data[0]
         self._attr_name = sensor_data[1].comment
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
@@ -93,6 +90,24 @@ class ParmairSwitch(CoordinatorEntity, SwitchEntity):
     def is_on(self):
         """Return the state of the sensor."""
         if self._key in self._coordinator.api.data:
-            return self._coordinator.api.data[self._key]>0
+            return int(self._coordinator.api.data[self._key])>0
         else:
             return None
+    
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """turn_on the switch."""
+        result = await self._coordinator.api.async_write_data(self._spec.id, 1)
+        _LOGGER.debug(f"Turn on {self._key}, set value result {result}")
+        if result == True:
+            self._coordinator.api.data[self._key] = "1"
+            await self.coordinator.async_request_refresh()
+        _LOGGER.debug(f"data {self._coordinator.api.data[self._key]}")
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """turn_off the switch."""
+        result = await self._coordinator.api.async_write_data(self._spec.id, 0)
+        _LOGGER.debug(f"Turn off {self._key}, set value result {result}")
+        if result == True:
+            self._coordinator.api.data[self._key] = "0"
+            await self.coordinator.async_request_refresh()
+        _LOGGER.debug(f"data {self._coordinator.api.data[self._key]}")
