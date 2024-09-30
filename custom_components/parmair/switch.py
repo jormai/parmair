@@ -96,18 +96,16 @@ class ParmairSwitch(CoordinatorEntity, SwitchEntity):
     
     async def async_turn_on(self, **kwargs: Any) -> None:
         """turn_on the switch."""
-        result = await self._coordinator.api.async_write_data(self._spec.id, 1)
+        result = await self._coordinator.async_write_data(self._key, 1)
         _LOGGER.debug(f"Turn on {self._key}, set value result {result}")
-        if result == True:
-            self._coordinator.api.data[self._key] = "1"
-            await self.coordinator.async_request_refresh()
+        #if result == True:
+        #    await self.coordinator.async_request_refresh()
         _LOGGER.debug(f"data {self._coordinator.api.data[self._key]}")
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """turn_off the switch."""
-        result = await self._coordinator.api.async_write_data(self._spec.id, 0)
+        result = await self._coordinator.async_write_data(self._key, 0)
         _LOGGER.debug(f"Turn off {self._key}, set value result {result}")
-        if result == True:
-            self._coordinator.api.data[self._key] = "0"
-            await self.coordinator.async_request_refresh()
+        #if result == True:
+        #    await self.coordinator.async_request_refresh()
         _LOGGER.debug(f"data {self._coordinator.api.data[self._key]}")

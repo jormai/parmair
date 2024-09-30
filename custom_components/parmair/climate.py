@@ -22,7 +22,7 @@ from homeassistant.util.enum import try_parse_enum
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import ParmairConfigEntry
-from .const import CONF_CURRENT_AIRFLOW_INPUT, CONF_CURRENT_FAN_SPEED, CONF_CURRENT_HUMIDITY, CONF_POWER_SWITCH, CONF_PRESET_MODE, DOMAIN, PRESET_MODES, SENSOR_DICT, SensorSpec
+from .const import CONF_CURRENT_AIRFLOW_INPUT, CONF_CURRENT_FAN_SPEED, CONF_CURRENT_HUMIDITY, CONF_POWER_SWITCH, CONF_PRESET_MODE, DOMAIN, SENSOR_DICT
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -76,6 +76,7 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
         
         #_enable_turn_on_off_backwards_compatibility = False
+        self._async_update_attrs()
 
     @property
     def hvac_mode(self) -> HVACMode | None:
@@ -95,11 +96,25 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
         self._attr_fan_mode = self._coordinator.api.data[CONF_CURRENT_FAN_SPEED]
         self._attr_preset_mode = self._attr_preset_modes[int(self._coordinator.api.data[CONF_PRESET_MODE])]
 
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        """Fetch new state data for the sensor."""
+        self._async_update_attrs()
+        self.async_write_ha_state()
+        _LOGGER.debug("_handle_coordinator_update: sensors state written to state machine")
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set the HVAC mode."""
         _LOGGER.debug(f"Set HVACMode {HVACMode}")
 
+    async def async_set_preset_mode(self, preset_mode: str) -> None:
+        value = self._attr_preset_modes.index(preset_mode)
+        
+        result = await self._coordinator.async_write_data(CONF_PRESET_MODE , value)
+        _LOGGER.debug(f"Setting value for {CONF_PRESET_MODE}, result {result}")
+        self._async_update_attrs()
+        #if result == True:
+        #    await self.coordinator.async_request_refresh()
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set the target temperature."""

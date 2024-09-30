@@ -236,8 +236,11 @@ class ParmairAPI:
             raise ModbusError() from modbus_error
         return result
 
-    async def async_write_data(self, register_address: int, value: int) -> bool:
+    async def async_write_data_with_key(self, key: str, value: int) -> bool:
         """Write Modbus register."""
+        if key not in SENSOR_DICT:
+            raise KeyError(key)
+        register_address = SENSOR_DICT[key].id
         try:
             if self.connect():
                 _LOGGER.debug(
@@ -245,13 +248,15 @@ class ParmairAPI:
                     self._slave_id,
                     self._base_addr,
                 )
-                response = self._client.write_register(self._base_addr+register_address, value)
+                reg_value = value * SENSOR_DICT[key].multiplier
+                response = self._client.write_register(self._base_addr+register_address, reg_value)
                 # Check if the write was successful
                 if response.isError():
                     _LOGGER.debug(f"Error writing to register {register_address}")
                     return False
                 else:
-                    _LOGGER.debug(f"Successfully wrote {value} to register {register_address}")
+                    _LOGGER.debug(f"Successfully wrote {value}:native={reg_value} to register {register_address}")
+                    self.data[key] = value
                     return True
             else:
                 _LOGGER.debug("Get Data failed: client not connected")

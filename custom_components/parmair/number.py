@@ -103,9 +103,7 @@ class ParmairNumber(CoordinatorEntity, NumberEntity):
             return
         
         reg_value = int(value*self._spec.multiplier)
-        result = await self._coordinator.api.async_write_data(self._spec.id, reg_value)
+        result = await self._coordinator.async_write_data(self._key, reg_value)
         _LOGGER.debug(f"Setting value for {self._key}, result {result}")
-        if result == True:
-            self._coordinator.api.data[self._key] = f"{value}"
 
 

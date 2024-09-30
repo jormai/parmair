@@ -112,11 +112,8 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
             return
         try:
             selected = self.options.index(option)
-            result = await self._coordinator.api.async_write_data(self._spec.id, selected)
+            result = await self._coordinator.async_write_data(self._key, selected)
             _LOGGER.debug(f"Selected option {selected} for {self._key}, set value result {result}")
-            if result == True:
-                self._coordinator.api.data[self._key] = f"{selected}"
-            _LOGGER.debug(f"TODO: Selected option {selected} for {self._key}")
         except ValueError:
             _LOGGER.warning(f"Option {option} was not found in {self._key}")
             return

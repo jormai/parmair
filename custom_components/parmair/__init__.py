@@ -19,7 +19,6 @@ from .const import (
     CONF_HOST,
     CONF_NAME,
     CONF_PORT,
-    CONF_TE10_MIN_AWAY_S,
     DEFAULT_NAME,
     DEFAULT_PORT,
     DOMAIN,

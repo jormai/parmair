@@ -92,3 +92,14 @@ class ParmairCoordinator(DataUpdateCoordinator):
             self.last_update_status = False
             _LOGGER.debug(f"Coordinator Update Error: {ex} at {self.last_update_time}")
             raise UpdateFailed() from ex
+
+    async def async_write_data(self, key: str, value: int) -> bool:
+        try:
+            result = await self.api.async_write_data_with_key(key, value)
+            if result == True:
+                self.async_update_listeners()
+            return result
+        except Exception as ex:
+            self.last_update_status = False
+            _LOGGER.debug(f"Coordinator Update Error: key {key}")
+            raise UpdateFailed() from ex
