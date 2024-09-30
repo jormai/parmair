@@ -45,16 +45,9 @@ DEFAULT_SLAVE_ID = 0
 DEFAULT_BASE_ADDR = 0
 DEFAULT_SCAN_INTERVAL = 60
 MIN_SCAN_INTERVAL = 30
-HVAC_MODES = [
-    HVACMode.AUTO,
-    HVACMode.HEAT,
-    HVACMode.OFF,
-]
 
-PRESET_MODES = [
-    PRESET_ECO,
-    PRESET_NONE,
-]
+
+
 STARTUP_MESSAGE = f"""
 -------------------------------------------------------------------
 {NAME}
@@ -97,8 +90,12 @@ class SensorSpec:
 
     def __repr__(self):
         return f"DataRow({self.id}, {self.comment}, {self.group}, {self.multiplier}, {self.min_limit}, {self.max_limit}, {self.unit}, {self.sensor_device_class}, {self.icon}, {self.writeable})"
-CONF_TE10_MIN_AWAY_S="TE10_MIN_AWAY_S"
-CONF_UNIT_CONTROL_FO="UNIT_CONTROL_FO"
+CONF_POWER_SWITCH="UNIT_CONTROL_FO"
+CONF_CURRENT_HUMIDITY="ME05_M"
+CONF_CURRENT_AIRFLOW_INPUT="TE10_M"
+CONF_CURRENT_FAN_SPEED="FAN_SPEED_I"
+CONF_PRESET_MODE="USERSTATECONTROL_FO"
+
 # note, id must be ascending    
 SENSOR_DEFS = {
     "ACK_ALARMS": [3,1, "Hälytysten kuittaus (0=ODOTETAAN KUITTAUSTA, 1=OK/KUITTAA)", "1", "1", "0", "1", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Odotetaan kuittausta","OK/Kuittaa"]],
@@ -184,12 +181,13 @@ SENSOR_DEFS = {
     "BST_MINTIME":  [140,1, "Asetusarvo, Tehostuksen minimiaika (min) / LTO, CO2, 0-10V", "10", "5", "1", "60", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE, Platform.NUMBER],
     "CO2_MINTIME": [141,1, "Asetusarvo, Automaattinen kotona-poissa minimiaika", "10", "15", "1", "600", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE, Platform.NUMBER],
     "BST_TIME_LIMIT": [144,1, "Asetusarvo, Kosteus ja CO2-tehostusten maksimiaika", "10", "1440", "15", "1440", "min", "SensorStateClass.DURATION", "mdi:clock-time-nine-outline", READ_WRITE, Platform.NUMBER],
-    CONF_UNIT_CONTROL_FO: [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", SwitchDeviceClass.SWITCH, None, "mdi:information-outline", READ_WRITE,Platform.SWITCH],
+    "UNIT_CONTROL_FO": [180,1, "IV-koneen ohjaus (0=Off, 1=On)", "10", "1", "0", "1", SwitchDeviceClass.SWITCH, None, "mdi:information-outline", READ_WRITE,Platform.SWITCH],
     "USERSTATECONTROL_FO": [181,1, "MAC 2 User state control from screen. 0=Off, 1=Away, 2=Home, 3=Boost, 4=Sauna, 5=Fireplace", "6", "1", "0", "5", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Off","Away","Home","Boost","Sauna","Fireplace"]],
     "DFRST_FI": [182,1, "Fiktiivinen indikointi, LTO:n sulatus päällä/pois", "6", "0", "0", "1", None, BinarySensorDeviceClass.RUNNING, "mdi:information-outline", READ_ONLY, Platform.BINARY_SENSOR],
     "FG50_EA_M": [183,10, "Fiktiivinen mittaus, LTO:n hyötysuhde", "6", "0.0", "0.0", "100.0", "%", SensorDeviceClass.POWER_FACTOR, "mdi:percent-circle", READ_ONLY],
     "FILTER_STATE_FI": [184,1, "Fiktiivinen asetus, Suodattimen kunto (0=Idle, 1=Kuittaa vaihto, 2=Muistutushälytys)", "6", "0", "0", "2", None, None, "mdi:information-outline", READ_WRITE,Platform.SELECT,["Idle","Kuittaa vaihto","Muistutushälytys"]],
     "SENSOR_STATUS": [185,1, "Yhdistelmäanturin tila (1=Ok, 0=Initoimatta, -1=Modbuskommunikaatiovirhe, -2=Data puuttuu)", "6", "0", "-2", "1", None, None, "mdi:information-outline", READ_ONLY],
+    "FAN_SPEED_I": [187,1, "Tilatieto, IV nopeusasetus", "6", "0", "1", "4", None, None, "mdi:information-outline", READ_ONLY],
     "SUMMER_MODE_I": [189,1, "Tilatieto, Kausi. 0=Talvi, 1=Väli, 2=Kesä", "6", "0", "0", "2", None, None, "mdi:information-outline", READ_ONLY],
     "SUMMER_POWER_CHANGE_FM": [190,1, "Kesätilanteen tehonsäätö", "6", "0", "-1", "1", None, None, "mdi:information-outline", READ_ONLY],
     "HUMIDITY_FM": [191,100, "Laskettu kosteus", "6", "0.00", "0.00", "100.00", "g/kg", SensorDeviceClass.MOISTURE, "mdi:water-percent", READ_ONLY],
