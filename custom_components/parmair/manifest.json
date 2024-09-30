@@ -2,7 +2,7 @@
   "codeowners": ["@jikaheimo"],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/jikaheimo/parmair",
+  "documentation": "https://github.com/jormai/parmair",
   "domain": "parmair",
   "integration_type": "device",
   "iot_class": "local_polling",

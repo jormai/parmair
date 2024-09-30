@@ -105,9 +105,9 @@ class ParmairConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             scan_interval = user_input[CONF_SCAN_INTERVAL]
 
             if self._host_in_configuration_exists(host):
-                errors[CONF_HOST] = "Device Already Configured"
+                errors[CONF_HOST] = "already_configured"
             elif not host_valid(user_input[CONF_HOST]):
-                errors[CONF_HOST] = "invalid Host IP"
+                errors[CONF_HOST] = "invalid_host_ip"
             else:
                 connected = await self.test_connection(
                     name, host, port, slave_id, base_addr, scan_interval
@@ -120,9 +120,7 @@ class ParmairConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         title=user_input[CONF_NAME], data=user_input
                     )
                 else:
-                    errors[CONF_HOST] = (
-                        "Connection to device failed (S/N not retreived)"
-                    )
+                    errors["base"] = "connection_failed"
 
         return self.async_show_form(
             step_id="user",

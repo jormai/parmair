@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import logging
 
 
-from config.custom_components.parmair.coordinator import ParmairCoordinator
+from .coordinator import ParmairCoordinator
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import HVAC_MODES, PRESET_AWAY, PRESET_BOOST, PRESET_ECO, PRESET_HOME, PRESET_NONE, ClimateEntityFeature, HVACAction, HVACMode
 from homeassistant.components.number import (

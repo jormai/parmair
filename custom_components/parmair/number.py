@@ -6,7 +6,7 @@ from dataclasses import dataclass
 import logging
 
 
-from config.custom_components.parmair.coordinator import ParmairCoordinator
+from .coordinator import ParmairCoordinator
 from homeassistant.components.number import (
     NumberEntity,
     NumberEntityDescription,

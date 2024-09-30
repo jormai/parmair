@@ -12,7 +12,7 @@ from pymodbus.constants import Endian
 from pymodbus.exceptions import ConnectionException, ModbusException
 from pymodbus.payload import BinaryPayloadDecoder
 
-from custom_components.parmair.const import SENSOR_DICT
+from .const import SENSOR_DICT
 
 _LOGGER = logging.getLogger(__name__)
 

@@ -1,10 +1,10 @@
 import logging
 from typing import Any
-from custom_components.parmair import ParmairConfigEntry
-from custom_components.parmair.api import ParmairAPI
-from custom_components.parmair.const import CONF_NAME, DOMAIN, SensorSpec
-from custom_components.parmair.const import SENSOR_DICT
-from custom_components.parmair.coordinator import ParmairCoordinator
+from . import ParmairConfigEntry
+from .api import ParmairAPI
+from .const import CONF_NAME, DOMAIN, SensorSpec
+from .const import SENSOR_DICT
+from .coordinator import ParmairCoordinator
 from homeassistant.components.select import SelectEntity
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
