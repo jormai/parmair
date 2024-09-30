@@ -1,0 +1,40 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Parmair Mac v2 Connection Configuration",
+        "description": "If you need help with the configuration go to: https://github.com/jormai/parmair",
+        "data": {
+          "name": "Custom Name of the ventilator (used for sensors' prefix)",
+          "host": "IP or hostname",
+          "port": "TCP port",
+          "slave_id": "Modbus Slave address of the inverter",
+          "base_addr": "Modbus Register Map Base Address",
+          "scan_interval": "Polling Period (min: 30s max: 600s)"
+        }
+      }
+    },
+    "error": {
+        "already_configured": "Device is already configured",
+        "invalid_host_ip": "Invalid Host IP",
+        "connection_failed": "Connection to device failed"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Parmair Mac v2 Connection Configuration Options",
+        "description": "Set Connection Options",
+        "data": {
+          "port": "TCP port",
+          "slave_id": "Modbus Slave address of the inverter",
+          "base_addr": "Modbus Register Map Base Address",
+          "scan_interval": "Polling Period (min: 30s max: 600s)"
+        }
+      }
+    }
+  }
+}
