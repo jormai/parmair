@@ -48,7 +48,7 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
         #self._attr_device_class = self._spec.sensor_device_class
         self._attr_should_poll = False
         # To link this entity the Parmair device
-        self._attr_device_info = {"identifiers": {(DOMAIN,  config_entry.unique_id)}}
+        self._attr_device_info = {"identifiers": {(DOMAIN,  f"{config_entry.unique_id}-ESSENTIALS")}}
         self._attr_fan_modes = [
             "0",
             "1",

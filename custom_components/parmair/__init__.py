@@ -22,6 +22,7 @@ from .const import (
     DEFAULT_NAME,
     DEFAULT_PORT,
     DOMAIN,
+    GROUPS,
     SENSOR_DICT,
     STARTUP_MESSAGE,
     SensorSpec,
@@ -86,18 +87,19 @@ async def async_update_device_registry(
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
     device_registry = dr.async_get(hass)
 
-    device_registry.async_get_or_create(
-        config_entry_id=config_entry.entry_id,
-        hw_version=None,
-        configuration_url=f"http://{config_entry.data.get(CONF_HOST)}",
-        identifiers={(DOMAIN, config_entry.unique_id)},
-        manufacturer=coordinator.api.data["comm_manufact"],
-        model=coordinator.api.data["VENT_MACHINE"],
-        name=config_entry.data.get(CONF_NAME),
-        #serial_number="1", #coordinator.api.data["comm_sernum"],
-        sw_version=coordinator.api.data["MULTI_SW_VER"],
-        via_device=None,
-    )
+    for key, value in GROUPS.items():
+        device_registry.async_get_or_create(
+            config_entry_id=config_entry.entry_id,
+            hw_version=None,
+            configuration_url=f"http://{config_entry.data.get(CONF_HOST)}",
+            identifiers={(DOMAIN, f"{config_entry.unique_id}-{value}")},
+            manufacturer=coordinator.api.data["comm_manufact"],
+            model=coordinator.api.data["VENT_MACHINE"],
+            name=f"{config_entry.data.get(CONF_NAME)}.{value}",
+            #serial_number="1", #coordinator.api.data["comm_sernum"],
+            sw_version=coordinator.api.data["MULTI_SW_VER"],
+            via_device=None,
+        )
 
 
 

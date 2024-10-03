@@ -2,7 +2,7 @@ import logging
 from typing import Any
 from . import ParmairConfigEntry
 from .api import ParmairAPI
-from .const import CONF_NAME, DOMAIN, SensorSpec
+from .const import CONF_NAME, DOMAIN, GROUPS, SensorSpec
 from .const import SENSOR_DICT
 from .coordinator import ParmairCoordinator
 from homeassistant.components.select import SelectEntity
@@ -72,7 +72,7 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
         self._attr_entity_category = EntityCategory.DIAGNOSTIC if self._spec.sensor_device_class is None else None
         self._attr_should_poll = False
         # To link this entity the Parmair device
-        self._attr_device_info = {"identifiers": {(DOMAIN,  config_entry.unique_id)}}
+        self._attr_device_info = {"identifiers": {(DOMAIN,  f"{config_entry.unique_id}-{GROUPS[sensor_data[1].group]}")}}
         self._current_index = 0
         self._current_index = int(self._coordinator.api.data[self._key])
         self._attr_options = sensor_data[1].options

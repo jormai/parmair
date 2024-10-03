@@ -19,7 +19,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import ParmairConfigEntry
-from .const import DOMAIN, SENSOR_DICT, SensorSpec
+from .const import DOMAIN, GROUPS, SENSOR_DICT, SensorSpec
 
 
 _LOGGER = logging.getLogger(__name__)
@@ -68,12 +68,13 @@ class ParmairNumber(CoordinatorEntity, NumberEntity):
         self._attr_icon = self._spec.icon
         self._attr_device_class = self._spec.sensor_device_class
         self._attr_entity_category = EntityCategory.DIAGNOSTIC if self._spec.sensor_device_class is None else None
-        self._attr_device_info = {"identifiers": {(DOMAIN,  config_entry.unique_id)}}
         self._attr_should_poll = False
         self._attr_native_step = 1
         self._attr_native_min_value = float(sensor_data[1].min_limit)
         self._attr_native_max_value=float(sensor_data[1].max_limit)
         self._attr_mode=NumberMode.BOX
+        # To link this entity the Parmair device
+        self._attr_device_info = {"identifiers": {(DOMAIN,  f"{config_entry.unique_id}-{GROUPS[sensor_data[1].group]}")}}
 
 
     @property
