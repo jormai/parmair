@@ -220,7 +220,7 @@ class ParmairAPI:
                             self.data[key] = decoder.decode_16bit_int()
                             if (SENSOR_DICT[key].multiplier != 1):
                                 self.data[key] = self.data[key] / SENSOR_DICT[key].multiplier
-                            _LOGGER.debug(f"reg {register}:{key} = {self.data[key]}. m={SENSOR_DICT[key].multiplier}. {SENSOR_DICT[key].comment}")
+                            _LOGGER.debug(f"reg {register}:{key} = {self.data[key]}. m={SENSOR_DICT[key].multiplier}. {SENSOR_DICT[key].name}")
                             key = next(it)
                         else:
                             _LOGGER.debug(f"Skipping {register}")

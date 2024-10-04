@@ -61,10 +61,15 @@ class ParmairBinarySensor(CoordinatorEntity, BinarySensorEntity):
         super().__init__(coordinator)
         self._coordinator = coordinator
         self._key = sensor_data[0]
+
+        # no name defined for the sensor since uses translated name
+        # set to use translated name
+        self._attr_has_entity_name = True
+        self.entity_id = f"binary_sensor.{sensor_data[1].name}"
+        self._attr_translation_key = sensor_data[1].name
+
         self._spec = sensor_data[1]
-        self._attr_name = sensor_data[1].comment
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
-        self._attr_translation_key = self._key
         self._attr_unit_of_measurement =  self._spec.unit
         self._attr_icon = self._spec.icon
         self._attr_device_class = self._spec.sensor_device_class

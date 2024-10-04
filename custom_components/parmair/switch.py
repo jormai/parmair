@@ -58,9 +58,13 @@ class ParmairSwitch(CoordinatorEntity, SwitchEntity):
         self._coordinator = coordinator
         self._spec = sensor_data[1]
         self._key = sensor_data[0]
-        self._attr_name = sensor_data[1].comment
+        # no name defined for the sensor since uses translated name
+        # set to use translated name
+        self._attr_has_entity_name = True
+        self.entity_id = f"switch.{sensor_data[1].name}"
+        self._attr_translation_key = sensor_data[1].name
+
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
-        self._attr_translation_key = self._key
         #self._attr_entity_category = EntityCategory.DIAGNOSTIC if self._spec.sensor_device_class is None else None
         self._attr_should_poll = False
         # To link this entity the Parmair device

@@ -41,11 +41,17 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry) -> None:
         super().__init__(coordinator)
         self._coordinator = coordinator
-        self._attr_name = "Parmair Climate"
-        self._key = "Parmair_climate"
+        self._key = "parmair_climate"
+        
+        # no name defined for the sensor since uses translated name
+        # set to use translated name
+        self._attr_has_entity_name = True
+        self.entity_id = "climate.parmair"
+        self._attr_translation_key = "parmair_climate"
+        
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
         self._attr_translation_key = self._key
-        #self._attr_device_class = self._spec.sensor_device_class
+
         self._attr_should_poll = False
         # To link this entity the Parmair device
         self._attr_device_info = {"identifiers": {(DOMAIN,  f"{config_entry.unique_id}-ESSENTIALS")}}
