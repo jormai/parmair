@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 import logging
 
+from homeassistant.helpers.entity import generate_entity_id
+
 
 from .coordinator import ParmairCoordinator
 from homeassistant.components.climate import ClimateEntity
@@ -46,7 +48,7 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
         # no name defined for the sensor since uses translated name
         # set to use translated name
         self._attr_has_entity_name = True
-        self.entity_id = "climate.parmair"
+        self.entity_id = generate_entity_id("climate.{}", "parmair", hass=coordinator.hass)
         self._attr_translation_key = "parmair_climate"
         
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"

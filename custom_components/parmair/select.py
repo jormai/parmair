@@ -8,7 +8,7 @@ from .coordinator import ParmairCoordinator
 from homeassistant.components.select import SelectEntity
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity import EntityCategory, generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.const import Platform
@@ -65,7 +65,7 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
         # no name defined for the sensor since uses translated name
         # set to use translated name
         self._attr_has_entity_name = True
-        self.entity_id = f"select.{sensor_data[1].name}"
+        self.entity_id = generate_entity_id("select.{}", sensor_data[1].name, hass=coordinator.hass)
         self._attr_translation_key = sensor_data[1].name
 
         self._spec = sensor_data[1]

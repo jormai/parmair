@@ -8,7 +8,7 @@ from .coordinator import ParmairCoordinator
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity import EntityCategory, generate_entity_id
 from homeassistant.const import Platform
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 _LOGGER = logging.getLogger(__name__)
@@ -62,7 +62,7 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         # no name defined for the sensor since uses translated name
         # set to use translated name
         self._attr_has_entity_name = True
-        self.entity_id = f"sensor.{sensor_data[1].name}"
+        self.entity_id = generate_entity_id("sensor.{}", sensor_data[1].name, hass=coordinator.hass)
         self._attr_translation_key = sensor_data[1].name
         
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"

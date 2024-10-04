@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 import logging
 
+from homeassistant.helpers.entity import generate_entity_id
+
 
 from .coordinator import ParmairCoordinator
 from homeassistant.components.number import (
@@ -63,7 +65,7 @@ class ParmairNumber(CoordinatorEntity, NumberEntity):
         # no name defined for the sensor since uses translated name
         # set to use translated name
         self._attr_has_entity_name = True
-        self.entity_id = f"number.{sensor_data[1].name}"
+        self.entity_id = generate_entity_id("number.{}", sensor_data[1].name, hass=coordinator.hass)
         self._attr_translation_key = sensor_data[1].name
 
         self._spec = sensor_data[1]
