@@ -223,8 +223,9 @@ class ParmairAPI:
                             _LOGGER.debug(f"reg {register}:{key} = {self.data[key]}. m={SENSOR_DICT[key].multiplier}. {SENSOR_DICT[key].name}")
                             key = next(it)
                         else:
-                            _LOGGER.debug(f"Skipping {register}")
-                            decoder.skip_bytes(2)
+                            value = decoder.decode_16bit_int()
+                            _LOGGER.debug(f"Skipping {register}={value}")
+                            #decoder.skip_bytes(2)
                 except StopIteration:
                     _LOGGER.debug("all sensor items handled")
                     break

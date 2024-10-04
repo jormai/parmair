@@ -43,6 +43,9 @@
               "name": "HR unit control (0=Off, 1=On)"
             }
         },
+        "climate": {
+            "parmair_climate": {"name": "Parmair Climate"}
+        },
         "sensor": {
             "alarm_count": {"name": "Number of Active Alarms"},
             "year": {"name": "Year"},
@@ -58,7 +61,7 @@
             "temp_supply_air": {"name": "Temperature measurement, supply air"},
             "temp_exhaust_air": {"name": "Temperature measurement, exhaust air"},
             "temp_return_air": {"name": "Temperature measurement, return air"},
-            "humid_lt_device": {"name": "Humidity measurement, LTO device"},
+            "humidity_hrv_device": {"name": "Humidity measurement, HRV device"},
             "co2_return_air": {"name": "CO2 measurement, return air"},
             "humid_wet_room": {"name": "Humidity measurement, wet room"},
             "co2_indoor_air": {"name": "CO2 measurement, indoor air"},
@@ -71,27 +74,27 @@
             "ctrl_heat_recovery": {"name": "Control, heat recovery"},
             "ctrl_pre_heater": {"name": "Control, pre-heating coil"},
             "ctrl_geo_heat_module": {"name": "Control, geothermal heating module"},
-            "iv_type_code": {"name": "IV unit type code"},
-            "fake_meas_lto_eff": {"name": "Fictitious measurement, LTO efficiency"},
+            "hrv_type_code": {"name": "HRV unit type code"},
+            "fake_meas_hrv_eff": {"name": "Fictitious measurement, HRV efficiency"},
             "comb_sensor_state": {"name": "Combination sensor state (1=Ok, 0=Not initialized, -1=Modbus communication error, -2=Data missing)"},
-            "status_fan_speed": {"name": "Status, IV fan speed"},
+            "status_fan_speed": {"name": "Status, HRV fan speed"},
             "status_season": {"name": "Status, season. 0=Winter, 1=Intermediate, 2=Summer"},
             "summer_power_ctrl": {"name": "Summer situation power control"},
             "calc_humidity": {"name": "Calculated humidity"},
-            "fake_meas_lto_humid": {"name": "Fictitious measurement, LTO humidity measurement 24h average"},
+            "fake_meas_hrv_humid": {"name": "Fictitious measurement, HRV humidity measurement 24h average"},
             "fake_ctrl_fan_limit": {"name": "Fictitious control, fan power limit"},
             "ext_temp_daily_avg": {"name": "Outdoor temperature daily average"}
         },
         "binary_sensor": {
             "fan_ind_supply": {"name": "Indicator, supply fan"},
             "fan_ind_return": {"name": "Indicator, return fan"},
-            "fake_ind_lto": {"name": "Fictitious indicator, LTO defrost on/off"},
+            "fake_ind_hrv": {"name": "Fictitious indicator, HRV defrost on/off"},
             "error_temp_fresh_air": {"name": "Fault alarm, fresh air temperature / sensor fault"},
             "error_temp_supply": {"name": "Fault alarm, supply temperature / sensor fault"},
-            "error_temp_supply_lto": {"name": "Fault alarm, supply temperature after LTO / sensor fault"},
+            "error_temp_supply_hrv": {"name": "Fault alarm, supply temperature after HRV / sensor fault"},
             "error_temp_return": {"name": "Fault alarm, return air temperature / sensor fault"},
             "error_temp_exhaust": {"name": "Fault alarm, exhaust air temperature / sensor fault"},
-            "error_humid_lto": {"name": "Fault alarm, LTO humidity / sensor fault"},
+            "error_humid_hrv": {"name": "Fault alarm, HRV humidity / sensor fault"},
             "conf_alarm_supply_fan": {"name": "Conflict alarm, supply fan"},
             "conf_alarm_return_fan": {"name": "Conflict alarm, return fan"},
             "high_limit_temp_supply": {"name": "Upper limit alarm, supply temperature"},
@@ -100,21 +103,108 @@
             "filter_alarm": {"name": "Filter alarm"}
         },
         "select": {
-            "ack_alarms": {"name": "Alarm Acknowledgement (0=WAITING FOR ACKNOWLEDGEMENT, 1=OK/ACKNOWLEDGE)"},
-            "setpoint_temp_ctrl": {"name": "Setpoint, temperature control (ECO, Standard)"},
-            "setpoint_time_prog": {"name": "Setpoint, time program use (0=not in use, 1=in use)"},
-            "setting_summer_cool": {"name": "Setting, summer cooling function (0=not in use, 1=on, 2=automatic)"},
-            "setting_summer_perf": {"name": "Setting, summer performance adjustments (0=not in use, 1=automatic)"},
-            "setting_post_heater": {"name": "Setting, post-heating resistor (0=not in use, 1=automatic)"},
-            "setting_auto_cold_cut": {"name": "Setting, automatic power reduction in cold conditions (0=not in use, 1=automatic)"},
-            "setting_auto_humid_boost": {"name": "Setting, automatic humidity boost (0=not in use, 1=automatic)"},
-            "setting_auto_co2_boost": {"name": "Setting, automatic CO2 boost (0=not in use, 1=automatic)"},
-            "setting_auto_home_away_co2": {"name": "Setting, automatic home/away (CO2) (0=not in use, 1=automatic)"},
-            "setpoint_filter_change": {"name": "Setpoint, filter change interval (0=3 months, 1=4 months, 2=6 months)"},
-            "setting_geo_heat_op": {"name": "Setpoint, geothermal module operation (0=Off, 1=On, 2=Auto)"},
-            "geo_heat_coil": {"name": "Geothermal coil (0=Not installed, 1=Installed)"},
-            "mac2_user_state": {"name": "MAC 2 User state control from screen. 0=Off, 1=Away, 2=Home, 3=Boost, 4=Sauna, 5=Fireplace"},
-            "fake_setting_filter_cond": {"name": "Fictitious setting, filter condition (0=Idle, 1=Acknowledge replacement, 2=Reminder alarm)"}
+            "ack_alarms": {
+              "name": "Alarm Acknowledgement",
+              "state": {
+                    "waiting_ack": "Waiting for acknowledgment",
+                    "ok_ack": "OK/Acknowledge"
+              }
+            },
+            "setpoint_temp_ctrl": {
+              "name": "Setpoint, temperature control",
+              "state": {
+                    "eco": "ECO",
+                    "standard": "Standard"
+              }
+            },
+            "setpoint_time_prog": {
+              "name": "Setpoint, time program use",
+              "state": {
+                    "not_in_use": "Not in use",
+                    "in_use": "In use"
+              }
+            },
+            "setting_summer_cool": {"name": "Setting, summer cooling function",
+              "state": {
+                    "not_in_use": "Not in use",
+                    "on": "On",
+                    "automatic": "Automatic"
+              }
+            },
+            "setting_summer_perf": {
+              "name": "Setting, summer performance adjustments",
+              "state": {
+                    "not_in_use": "Not in use",
+                    "automatic": "Automatic"
+              }
+            },
+            "setting_post_heater": {"name": "Setting, post-heating resistor",
+            "state": {
+                  "not_in_use": "Not in use",
+                  "automatic": "Automatic"
+              }
+            },
+            "setting_auto_cold_cut": {"name": "Setting, automatic power reduction in cold conditions",
+            "state": {
+                  "not_in_use": "Not in use",
+                  "automatic": "Automatic"
+              }
+            },
+            "setting_auto_humid_boost": {"name": "Setting, automatic humidity boost",
+            "state": {
+                  "not_in_use": "Not in use",
+                  "automatic": "Automatic"
+              }
+            },
+            "setting_auto_co2_boost": {"name": "Setting, automatic CO2 boost",
+            "state": {
+                  "not_in_use": "Not in use",
+                  "automatic": "Automatic"
+            }
+            },
+            "setting_auto_home_away_co2": {"name": "Setting, automatic home/away (CO2)",
+            "state": {
+                  "not_in_use": "Not in use",
+                  "automatic": "Automatic"
+            }
+            },
+            "setpoint_filter_change": {"name": "Setpoint, filter change interval",
+              "state": {
+                    "3m": "3 months",
+                    "4m": "4 months",
+                    "6m": "6 months"
+              }
+            },
+            "setting_geo_heat_op": {"name": "Setpoint, geothermal module operation",
+              "state": {
+                    "off": "Off",
+                    "on": "On",
+                    "automatic": "Automatic"
+              }
+            },
+            "geo_heat_coil": {"name": "Geothermal coil",
+              "state": {
+                    "not_installed": "Not installed",
+                    "installed": "Installed"
+              }
+            },
+            "mac2_user_state": {"name": "MAC 2 User state control from screen.",
+              "state": {
+                    "off": "Off",
+                    "away": "Away",
+                    "home": "Home",
+                    "boost": "Boost",
+                    "sauna": "Sauna",
+                    "fireplace": "Fireplace"
+              }
+            },
+            "fake_setting_filter_cond": {"name": "Fictitious setting, filter condition",
+              "state": {
+                    "idle": "Idle",
+                    "ack_needed": "Acknowledge replacement",
+                    "reminder_alarm": "Reminder alarm"
+              }
+            } 
         },
         "number": {
             "setpoint_vent_home": {"name": "Setpoint, ventilation setting in home mode"},
@@ -154,7 +244,7 @@
             "co2_correction": {"name": "CO2 correction"},
             "setpoint_min_supply_user": {"name": "Setpoint, minimum supply temperature user can set"},
             "setpoint_base_supply_temp": {"name": "Setpoint, base supply temperature adjustable by potentiometer"},
-            "setpoint_boost_min_time": {"name": "Setpoint, boost minimum time (min) / LTO, CO2, 0-10V"},
+            "setpoint_boost_min_time": {"name": "Setpoint, boost minimum time (min) / HRV, CO2, 0-10V"},
             "setpoint_auto_home_away_min": {"name": "Setpoint, automatic home-away minimum time"},
             "setpoint_boost_max_time": {"name": "Setpoint, maximum time for humidity and CO2 boosts"}
         }

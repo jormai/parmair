@@ -56,7 +56,9 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         super().__init__(coordinator)
         self._coordinator = coordinator
         self._key = sensor_data[0]
-        
+        spec = sensor_data[1]
+        self._unit = spec.unit
+
         # no name defined for the sensor since uses translated name
         # set to use translated name
         self._attr_has_entity_name = True
@@ -64,15 +66,15 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         self._attr_translation_key = sensor_data[1].name
         
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
-        spec = sensor_data[1]
-        self._attr_unit_of_measurement =  spec.unit
+        
+        self._attr_native_unit_of_measurement = spec.unit
         self._attr_icon = spec.icon
         self._attr_device_class = spec.sensor_device_class
         self._attr_entity_category = EntityCategory.DIAGNOSTIC if spec.sensor_device_class is None else None
         self._attr_should_poll = False
+        
         # To link this entity the Parmair device
         self._attr_device_info = {"identifiers": {(DOMAIN,  f"{config_entry.unique_id}-{GROUPS[spec.group]}")}}
-
 
     @callback
     def _handle_coordinator_update(self) -> None:
