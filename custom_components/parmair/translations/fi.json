@@ -106,21 +106,21 @@
                 }
             },
             "setpoint_temp_ctrl": {
-                "name": "Asetusarvo, lämpötilan ohjaus",
+                "name": "Lämpötilan ohjaus",
                 "state": {
                     "eco": "ECO",
                     "standard": "Standardi"
                 }
             },
             "setpoint_time_prog": {
-                "name": "Asetusarvo, aikaohjelman käyttö",
+                "name": "Aikaohjelman käyttö",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "in_use": "Käytössä"
                 }
             },
             "setting_summer_cool": {
-                "name": "Asetus, kesäviilennystoiminto",
+                "name": "Kesäviilennystoiminto",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "on": "Päällä",
@@ -128,49 +128,49 @@
                 }
             },
             "setting_summer_perf": {
-                "name": "Asetus, kesäkäytön tehomuutokset",
+                "name": "Kesäkäytön tehomuutokset",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "automatic": "Automaattinen"
                 }
             },
             "setting_post_heater": {
-                "name": "Asetus, jälkilämmitysvastus",
+                "name": "Jälkilämmitysvastus",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "automatic": "Automaattinen"
                 }
             },
             "setting_auto_cold_cut": {
-                "name": "Asetus, automaattinen tehon vähennys kylmissä olosuhteissa",
+                "name": "Automaattinen tehon vähennys kylmissä olosuhteissa",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "automatic": "Automaattinen"
                 }
             },
             "setting_auto_humid_boost": {
-                "name": "Asetus, automaattinen kosteustehostus",
+                "name": "Automaattinen kosteustehostus",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "automatic": "Automaattinen"
                 }
             },
             "setting_auto_co2_boost": {
-                "name": "Asetus, automaattinen CO2-tehostus",
+                "name": "Automaattinen CO2-tehostus",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "automatic": "Automaattinen"
                 }
             },
             "setting_auto_home_away_co2": {
-                "name": "Asetus, automaattinen kotona/poissa (CO2)",
+                "name": "Automaattinen kotona/poissa (CO2)",
                 "state": {
                     "not_in_use": "Ei käytössä",
                     "automatic": "Automaattinen"
                 }
             },
             "setpoint_filter_change": {
-                "name": "Asetusarvo, suodattimen vaihtoväli",
+                "name": "Suodattimen vaihtoväli",
                 "state": {
                     "3m": "3 kuukautta",
                     "4m": "4 kuukautta",
@@ -178,7 +178,7 @@
                 }
             },
             "setting_geo_heat_op": {
-                "name": "Asetusarvo, maalämpömoduulin käyttö",
+                "name": "Maalämpömoduulin käyttö",
                 "state": {
                     "off": "Pois",
                     "on": "Päällä",
@@ -193,7 +193,7 @@
                 }
             },
             "mac2_user_state": {
-                "name": "MAC 2 Käyttäjätilaohjaus näytöltä",
+                "name": "Käyttäjätilaohjaus näytöltä",
                 "state": {
                     "off": "Sammutettu",
                     "away": "Poissa",
@@ -204,7 +204,7 @@
                 }
             },
             "fake_setting_filter_cond": {
-                "name": "Fiktiivinen asetus, suodattimen tila",
+                "name": "Fiktiivinen suodattimen tila",
                 "state": {
                     "idle": "Ok",
                     "ack_needed": "Kuittaa vaihto",
@@ -214,46 +214,69 @@
         },
 
         "number": {
-            "setpoint_vent_home": {"name": "Asetusarvo, Ilmanvaihtoasetus kotona-tilassa"},
-            "setpoint_min_temp_home": {"name": "Asetusarvo, Tulolämpötilan minimiarvo kotona-tilassa"},
-            "setpoint_vent_away": {"name": "Asetusarvo, Ilmanvaihtoasetus poissa-tilassa"},
-            "setpoint_min_temp_away": {"name": "Asetusarvo, Tulolämpötilan minimiarvo poissa-tilassa"},
-            "setpoint_boost_speed": {"name": "Asetusarvo, Tehostuksen nopeusasetus (nopeus 3-5)"},
-            "setpoint_over_press": {"name": "Asetusarvo, Puhaltimien ylipainetilanteen ylipaineen määrä"},
-            "setpoint_exh_temp": {"name": "Asetusarvo, Poistolämpötila (Tavoiteltava huonelämpötila kesäkaudella)"},
-            "setting_cold_cut_temp": {"name": "Asetus, Tehonpudostus pakkasella, pakkasraja"},
-            "setpoint_humidity_sens": {"name": "Asetusarvo, kosteustehostuksen herkkyys"},
-            "setting_humidity_temp_limit": {"name": "Asetusarvo, Kosteustehostuksen ulkolämpötilaraja"},
-            "setpoint_co2_home": {"name": "Asetusarvo, CO2 kotona-raja"},
-            "setpoint_co2_boost": {"name": "Asetusarvo, CO2 tehostusraja (tehostuksen aloitus)"},
-            "setting_geo_heat_limit_winter": {"name": "Asetusarvo, maalämpömoduulin käyttöraja talvi"},
-            "setting_geo_heat_limit_summer": {"name": "Asetusarvo, maalämpömoduulin käyttöraja kesä"},
-            "setpoint_heating_season_24h": {"name": "Asetusarvo, Lämmityskausi (24h raitis lämpötila)"},
-            "setpoint_heating_season_now": {"name": "Asetusarvo, Lämmityskausi (hetkellinen raitis lämpötila)"},
-            "setpoint_supply_temp_summer": {"name": "Asetusarvo, Tulolämpötilan kesä-tilassa"},
-            "setpoint_supply_max_temp": {"name": "Asetusarvo, Tulolämpötilan maksimiarvo"},
-            "setpoint_boost_temp_limit": {"name": "Asetusarvo, Tehostuksen ulkolämpötilaraja / CO2, 0-10V"},
+            "setpoint_vent_home": {"name": "Ilmanvaihtoasetus kotona-tilassa"},
+            "setpoint_min_temp_home": {"name": "Tulolämpötilan minimiarvo kotona-tilassa"},
+            "setpoint_vent_away": {"name": "Ilmanvaihtoasetus poissa-tilassa"},
+            "setpoint_min_temp_away": {"name": "Tulolämpötilan minimiarvo poissa-tilassa"},
+            "setpoint_boost_speed": {"name": "Tehostuksen nopeusasetus (nopeus 3-5)"},
+            "setpoint_over_press": {"name": "Puhaltimien ylipainetilanteen ylipaineen määrä"},
+            "setpoint_exh_temp": {"name": "Poistolämpötila (Tavoiteltava huonelämpötila kesäkaudella)"},
+            "setting_cold_cut_temp": {"name": "Tehonpudostus pakkasella, pakkasraja"},
+            "setpoint_humidity_sens": {"name": "Kosteustehostuksen herkkyys"},
+            "setting_humidity_temp_limit": {"name": "Kosteustehostuksen ulkolämpötilaraja"},
+            "setpoint_co2_home": {"name": "CO2 kotona-raja"},
+            "setpoint_co2_boost": {"name": "CO2 tehostusraja (tehostuksen aloitus)"},
+            "setting_geo_heat_limit_winter": {"name": "Maalämpömoduulin käyttöraja talvi"},
+            "setting_geo_heat_limit_summer": {"name": "Maalämpömoduulin käyttöraja kesä"},
+            "setpoint_heating_season_24h": {"name": "Lämmityskausi (24h raitis lämpötila)"},
+            "setpoint_heating_season_now": {"name": "Lämmityskausi (hetkellinen raitis lämpötila)"},
+            "setpoint_supply_temp_summer": {"name": "Tulolämpötilan kesä-tilassa"},
+            "setpoint_supply_max_temp": {"name": "Tulolämpötilan maksimiarvo"},
+            "setpoint_boost_temp_limit": {"name": "Tehostuksen ulkolämpötilaraja / CO2, 0-10V"},
             "meas_point_type_10": {"name": "Mittauspaikan 10 tyyppi. 0=Ei käytössä."},
             "meas_point_type_11": {"name": "Mittauspaikan 11 tyyppi. 0=Ei käytössä."},
             "meas_point_type_12": {"name": "Mittauspaikan 12 tyyppi. 0=Ei käytössä."},
-            "setting_supply_fan_speed_1": {"name": "Asetusarvo, Tulopuhaltimen nopeusasetus 1"},
-            "setting_supply_fan_speed_2": {"name": "Asetusarvo, Tulopuhaltimen nopeusasetus 2"},
-            "setting_supply_fan_speed_3": {"name": "Asetusarvo, Tulopuhaltimen nopeusasetus 3"},
-            "setting_supply_fan_speed_4": {"name": "Asetusarvo, Tulopuhaltimen nopeusasetus 4"},
-            "setting_supply_fan_speed_5": {"name": "Asetusarvo, Tulopuhaltimen nopeusasetus 5"},
-            "setting_return_fan_speed_1": {"name": "Asetusarvo, Poistopuhaltimen nopeusasetus 1"},
-            "setting_return_fan_speed_2": {"name": "Asetusarvo, Poistopuhaltimen nopeusasetus 2"},
-            "setting_return_fan_speed_3": {"name": "Asetusarvo, Poistopuhaltimen nopeusasetus 3"},
-            "setting_return_fan_speed_4": {"name": "Asetusarvo, Poistopuhaltimen nopeusasetus 4"},
-            "setting_return_fan_speed_5": {"name": "Asetusarvo, Poistopuhaltimen nopeusasetus 5"},
+            "setting_supply_fan_speed_1": {"name": "Tulopuhaltimen nopeusasetus 1"},
+            "setting_supply_fan_speed_2": {"name": "Tulopuhaltimen nopeusasetus 2"},
+            "setting_supply_fan_speed_3": {"name": "Tulopuhaltimen nopeusasetus 3"},
+            "setting_supply_fan_speed_4": {"name": "Tulopuhaltimen nopeusasetus 4"},
+            "setting_supply_fan_speed_5": {"name": "Tulopuhaltimen nopeusasetus 5"},
+            "setting_return_fan_speed_1": {"name": "Poistopuhaltimen nopeusasetus 1"},
+            "setting_return_fan_speed_2": {"name": "Poistopuhaltimen nopeusasetus 2"},
+            "setting_return_fan_speed_3": {"name": "Poistopuhaltimen nopeusasetus 3"},
+            "setting_return_fan_speed_4": {"name": "Poistopuhaltimen nopeusasetus 4"},
+            "setting_return_fan_speed_5": {"name": "Poistopuhaltimen nopeusasetus 5"},
             "temp_correction": {"name": "Lämpötilan korjaus"},
             "humidity_correction": {"name": "Kosteuden korjaus"},
             "co2_correction": {"name": "Hiilidioksidin korjaus"},
-            "setpoint_min_supply_user": {"name": "Asetusarvo, Tulolämpötilan minimiarvo jonka käyttäjä voi asettaa"},
-            "setpoint_base_supply_temp": {"name": "Asetusarvo, Tulolämpötilan perusasetusarvo, josta voidaan potikalla poikkeuttaa."},
-            "setpoint_boost_min_time": {"name": "Asetusarvo, Tehostuksen minimiaika (min) / LTO, CO2, 0-10V"},
-            "setpoint_auto_home_away_min": {"name": "Asetusarvo, Automaattinen kotona-poissa minimiaika"},
-            "setpoint_boost_max_time": {"name": "Asetusarvo, Kosteus ja CO2-tehostusten maksimiaika"}
+            "setpoint_min_supply_user": {"name": "Tulolämpötilan minimiarvo jonka käyttäjä voi asettaa"},
+            "setpoint_base_supply_temp": {"name": "Tulolämpötilan perusasetusarvo, josta voidaan potikalla poikkeuttaa."},
+            "setpoint_boost_min_time": {"name": "Tehostuksen minimiaika (min) / LTO, CO2, 0-10V"},
+            "setpoint_auto_home_away_min": {"name": "Automaattinen kotona-poissa minimiaika"},
+            "setpoint_boost_max_time": {"name": "Kosteus ja CO2-tehostusten maksimiaika"}
+        }
+    },
+    "device": {
+        "system_settings": {
+            "name": "Järjestelmän asetukset"
+        },
+        "physical_inputs": {
+            "name": "Fyysiset syötteet"
+        },
+        "physical_outputs": {
+            "name": "Fyysiset lähdöt"
+        },
+        "settings": {
+            "name": "Asetukset"
+        },
+        "configuration_params": {
+            "name": "Määritysparametrit"
+        },
+        "alarms": {
+            "name": "Hälytykset"
+        },
+        "essentials": {
+            "name": "Perusteet"
         }
     }
 }

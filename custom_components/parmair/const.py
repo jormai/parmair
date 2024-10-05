@@ -133,13 +133,13 @@ CONF_CURRENT_AIRFLOW_INPUT="TE10_M"
 CONF_CURRENT_FAN_SPEED="FAN_SPEED_I"
 CONF_PRESET_MODE="USERSTATECONTROL_FO"
 GROUPS = {
-    "1": "SYSTEM SETTINGS",
-    "2": "PHYSICAL INPUTS",
-    "3": "PHYSICAL OUTPUTS",
-    "4": "SETTINGS",
-    "10": "CONFIGURATION PARAMETERS",
-    "7": "ALARMS",
-    "11": "ESSENTIALS"
+    "1": "system_settings",
+    "2": "physical_inputs",
+    "3": "physical_outputs",
+    "4": "settings",
+    "10": "configuration_params",
+    "7": "alarms",
+    "11": "essentials"
 }
 """
 Perhaps this includes filter change date?

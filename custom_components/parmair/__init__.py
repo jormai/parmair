@@ -98,6 +98,7 @@ async def async_update_device_registry(
             name=f"{config_entry.data.get(CONF_NAME)}.{value}",
             #serial_number="1", #coordinator.api.data["comm_sernum"],
             sw_version=coordinator.api.data["MULTI_SW_VER"],
+            translation_key=value,
             via_device=None,
         )
 

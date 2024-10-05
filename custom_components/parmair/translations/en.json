@@ -111,20 +111,20 @@
               }
             },
             "setpoint_temp_ctrl": {
-              "name": "Setpoint, temperature control",
+              "name": "Temperature control mode",
               "state": {
                     "eco": "ECO",
                     "standard": "Standard"
               }
             },
             "setpoint_time_prog": {
-              "name": "Setpoint, time program use",
+              "name": "Time program use",
               "state": {
                     "not_in_use": "Not in use",
                     "in_use": "In use"
               }
             },
-            "setting_summer_cool": {"name": "Setting, summer cooling function",
+            "setting_summer_cool": {"name": "Summer cooling function",
               "state": {
                     "not_in_use": "Not in use",
                     "on": "On",
@@ -132,50 +132,50 @@
               }
             },
             "setting_summer_perf": {
-              "name": "Setting, summer performance adjustments",
+              "name": "Summer performance adjustments",
               "state": {
                     "not_in_use": "Not in use",
                     "automatic": "Automatic"
               }
             },
-            "setting_post_heater": {"name": "Setting, post-heating resistor",
+            "setting_post_heater": {"name": "Post-heating resistor",
             "state": {
                   "not_in_use": "Not in use",
                   "automatic": "Automatic"
               }
             },
-            "setting_auto_cold_cut": {"name": "Setting, automatic power reduction in cold conditions",
+            "setting_auto_cold_cut": {"name": "Automatic power reduction in cold conditions",
             "state": {
                   "not_in_use": "Not in use",
                   "automatic": "Automatic"
               }
             },
-            "setting_auto_humid_boost": {"name": "Setting, automatic humidity boost",
+            "setting_auto_humid_boost": {"name": "Automatic humidity boost",
             "state": {
                   "not_in_use": "Not in use",
                   "automatic": "Automatic"
               }
             },
-            "setting_auto_co2_boost": {"name": "Setting, automatic CO2 boost",
+            "setting_auto_co2_boost": {"name": "Automatic CO2 boost",
             "state": {
                   "not_in_use": "Not in use",
                   "automatic": "Automatic"
             }
             },
-            "setting_auto_home_away_co2": {"name": "Setting, automatic home/away (CO2)",
+            "setting_auto_home_away_co2": {"name": "Automatic home/away (CO2)",
             "state": {
                   "not_in_use": "Not in use",
                   "automatic": "Automatic"
             }
             },
-            "setpoint_filter_change": {"name": "Setpoint, filter change interval",
+            "setpoint_filter_change": {"name": "Filter change interval",
               "state": {
                     "3m": "3 months",
                     "4m": "4 months",
                     "6m": "6 months"
               }
             },
-            "setting_geo_heat_op": {"name": "Setpoint, geothermal module operation",
+            "setting_geo_heat_op": {"name": "Geothermal module operation",
               "state": {
                     "off": "Off",
                     "on": "On",
@@ -188,7 +188,7 @@
                     "installed": "Installed"
               }
             },
-            "mac2_user_state": {"name": "MAC 2 User state control from screen.",
+            "mac2_user_state": {"name": "User state control from screen.",
               "state": {
                     "off": "Off",
                     "away": "Away",
@@ -198,55 +198,78 @@
                     "fireplace": "Fireplace"
               }
             },
-            "fake_setting_filter_cond": {"name": "Fictitious setting, filter condition",
+            "fake_setting_filter_cond": {"name": "Filter condition",
               "state": {
-                    "idle": "Idle",
+                    "idle": "Ok",
                     "ack_needed": "Acknowledge replacement",
                     "reminder_alarm": "Reminder alarm"
               }
             } 
         },
         "number": {
-            "setpoint_vent_home": {"name": "Setpoint, ventilation setting in home mode"},
-            "setpoint_min_temp_home": {"name": "Setpoint, minimum supply temperature in home mode"},
-            "setpoint_vent_away": {"name": "Setpoint, ventilation setting in away mode"},
-            "setpoint_min_temp_away": {"name": "Setpoint, minimum supply temperature in away mode"},
-            "setpoint_boost_speed": {"name": "Setpoint, boost speed setting (speed 3-5)"},
-            "setpoint_over_press": {"name": "Setpoint, overpressure in overpressure situation"},
-            "setpoint_exh_temp": {"name": "Setpoint, exhaust temperature (desired room temperature in summer season)"},
-            "setting_cold_cut_temp": {"name": "Setting, power reduction in freezing, freeze limit"},
-            "setpoint_humidity_sens": {"name": "Setpoint, humidity boost sensitivity"},
-            "setting_humidity_temp_limit": {"name": "Setpoint, humidity boost outdoor temperature limit"},
-            "setpoint_co2_home": {"name": "Setpoint, CO2 home threshold"},
-            "setpoint_co2_boost": {"name": "Setpoint, CO2 boost threshold (boost start)"},
-            "setting_geo_heat_limit_winter": {"name": "Setpoint, geothermal module winter operation limit"},
-            "setting_geo_heat_limit_summer": {"name": "Setpoint, geothermal module summer operation limit"},
-            "setpoint_heating_season_24h": {"name": "Setpoint, heating season (24h fresh air temperature)"},
-            "setpoint_heating_season_now": {"name": "Setpoint, heating season (instant fresh air temperature)"},
-            "setpoint_supply_temp_summer": {"name": "Setpoint, supply temperature in summer mode"},
-            "setpoint_supply_max_temp": {"name": "Setpoint, maximum supply temperature"},
-            "setpoint_boost_temp_limit": {"name": "Setpoint, boost outdoor temperature limit / CO2, 0-10V"},
+            "setpoint_vent_home": {"name": "Ventilation setting in home mode"},
+            "setpoint_min_temp_home": {"name": "Minimum supply temperature in home mode"},
+            "setpoint_vent_away": {"name": "Ventilation setting in away mode"},
+            "setpoint_min_temp_away": {"name": "Minimum supply temperature in away mode"},
+            "setpoint_boost_speed": {"name": "Boost speed setting (speed 3-5)"},
+            "setpoint_over_press": {"name": "Overpressure in overpressure situation"},
+            "setpoint_exh_temp": {"name": "Exhaust temperature (desired room temperature in summer season)"},
+            "setting_cold_cut_temp": {"name": "Power reduction in freezing, freeze limit"},
+            "setpoint_humidity_sens": {"name": "Humidity boost sensitivity"},
+            "setting_humidity_temp_limit": {"name": "Humidity boost outdoor temperature limit"},
+            "setpoint_co2_home": {"name": "CO2 home threshold"},
+            "setpoint_co2_boost": {"name": "CO2 boost threshold (boost start)"},
+            "setting_geo_heat_limit_winter": {"name": "Geothermal module winter operation limit"},
+            "setting_geo_heat_limit_summer": {"name": "Geothermal module summer operation limit"},
+            "setpoint_heating_season_24h": {"name": "Heating season (24h fresh air temperature)"},
+            "setpoint_heating_season_now": {"name": "Heating season (instant fresh air temperature)"},
+            "setpoint_supply_temp_summer": {"name": "Supply temperature in summer mode"},
+            "setpoint_supply_max_temp": {"name": "Maximum supply temperature"},
+            "setpoint_boost_temp_limit": {"name": "Boost outdoor temperature limit / CO2, 0-10V"},
             "meas_point_type_10": {"name": "Measurement point 10 type. 0=Not in use."},
             "meas_point_type_11": {"name": "Measurement point 11 type. 0=Not in use."},
             "meas_point_type_12": {"name": "Measurement point 12 type. 0=Not in use."},
-            "setting_supply_fan_speed_1": {"name": "Setpoint, supply fan speed 1"},
-            "setting_supply_fan_speed_2": {"name": "Setpoint, supply fan speed 2"},
-            "setting_supply_fan_speed_3": {"name": "Setpoint, supply fan speed 3"},
-            "setting_supply_fan_speed_4": {"name": "Setpoint, supply fan speed 4"},
-            "setting_supply_fan_speed_5": {"name": "Setpoint, supply fan speed 5"},
-            "setting_return_fan_speed_1": {"name": "Setpoint, return fan speed 1"},
-            "setting_return_fan_speed_2": {"name": "Setpoint, return fan speed 2"},
-            "setting_return_fan_speed_3": {"name": "Setpoint, return fan speed 3"},
-            "setting_return_fan_speed_4": {"name": "Setpoint, return fan speed 4"},
-            "setting_return_fan_speed_5": {"name": "Setpoint, return fan speed 5"},
+            "setting_supply_fan_speed_1": {"name": "Supply fan speed 1"},
+            "setting_supply_fan_speed_2": {"name": "Supply fan speed 2"},
+            "setting_supply_fan_speed_3": {"name": "Supply fan speed 3"},
+            "setting_supply_fan_speed_4": {"name": "Supply fan speed 4"},
+            "setting_supply_fan_speed_5": {"name": "Supply fan speed 5"},
+            "setting_return_fan_speed_1": {"name": "Return fan speed 1"},
+            "setting_return_fan_speed_2": {"name": "Return fan speed 2"},
+            "setting_return_fan_speed_3": {"name": "Return fan speed 3"},
+            "setting_return_fan_speed_4": {"name": "Return fan speed 4"},
+            "setting_return_fan_speed_5": {"name": "Return fan speed 5"},
             "temp_correction": {"name": "Temperature correction"},
             "humidity_correction": {"name": "Humidity correction"},
             "co2_correction": {"name": "CO2 correction"},
-            "setpoint_min_supply_user": {"name": "Setpoint, minimum supply temperature user can set"},
-            "setpoint_base_supply_temp": {"name": "Setpoint, base supply temperature adjustable by potentiometer"},
-            "setpoint_boost_min_time": {"name": "Setpoint, boost minimum time (min) / HRV, CO2, 0-10V"},
-            "setpoint_auto_home_away_min": {"name": "Setpoint, automatic home-away minimum time"},
-            "setpoint_boost_max_time": {"name": "Setpoint, maximum time for humidity and CO2 boosts"}
+            "setpoint_min_supply_user": {"name": "Minimum supply temperature user can set"},
+            "setpoint_base_supply_temp": {"name": "Base supply temperature adjustable by potentiometer"},
+            "setpoint_boost_min_time": {"name": "Boost minimum time (min) / HRV, CO2, 0-10V"},
+            "setpoint_auto_home_away_min": {"name": "Automatic home-away minimum time"},
+            "setpoint_boost_max_time": {"name": "Maximum time for humidity and CO2 boosts"}
         }
+    },
+    "device": {
+      "system_settings": {
+        "name": "System settings" 
+      },
+      "physical_inputs": {
+        "name": "Physical inputs" 
+      },
+      "physical_outputs": {
+        "name": "Physical outputs" 
+      },
+      "settings": {
+        "name": "Settings" 
+      },
+      "configuration_params": {
+        "name": "Configuration parameters" 
+      },
+      "alarms": {
+        "name": "Alarms" 
+      },
+      "essentials": {
+        "name": "Essentials" 
+      }
     }
 }
