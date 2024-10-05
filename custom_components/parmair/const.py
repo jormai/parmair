@@ -141,6 +141,13 @@ GROUPS = {
     "7": "ALARMS",
     "11": "ESSENTIALS"
 }
+"""
+Perhaps this includes filter change date?
+2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 195=2024
+2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 196=5
+2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 197=9
+2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 198=2024
+"""
 # note, id must be ascending    
 SENSOR_DEFS = {
 "ACK_ALARMS":[3,1,"ack_alarms","1","1","0","1",None,None,"mdi:information-outline",READ_WRITE,Platform.SELECT,["waiting_ack","ok_ack"]],
@@ -167,8 +174,8 @@ SENSOR_DEFS = {
 "EXTERNAL_M":[31,10,"ext_ctrl_signal","2","0.0","-1.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:percent-circle",READ_ONLY],
 "EXTERNAL_BOOST_M":[35,10,"ext_boost_signal","2","0.0","-1.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:percent-circle",READ_ONLY],
 "TE10_DEFLECTION_M":[36,10,"supply_temp_adjust","2","0.0","-9.9","3.0","°C",SensorDeviceClass.TEMPERATURE,"mdi:temperature-celsius",READ_ONLY],
-"TF10_Y":[40,10,"fan_ctrl_supply","3","0.0","0.0","100.0","%",SensorDeviceClass.SPEED,"mdi:fan",READ_ONLY],
-"PF30_Y":[42,10,"fan_ctrl_return","3","0.0","0.0","100.0","%",SensorDeviceClass.SPEED,"mdi:fan",READ_ONLY],
+"TF10_Y":[40,10,"fan_ctrl_supply","3","0.0","0.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:fan",READ_ONLY],
+"PF30_Y":[42,10,"fan_ctrl_return","3","0.0","0.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:fan",READ_ONLY],
 "TV45_Y":[44,10,"ctrl_post_heater","3","0.0","0.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:percent-circle",READ_ONLY],
 "FG50_Y":[46,10,"ctrl_heat_recovery","3","0.0","0.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:percent-circle",READ_ONLY],
 "EC05_Y":[48,10,"ctrl_pre_heater","3","0.0","0.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:percent-circle",READ_ONLY],

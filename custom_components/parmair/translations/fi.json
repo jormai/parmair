@@ -1,41 +1,41 @@
-{
+{ 
     "config": {
-      "step": {
-        "user": {
-          "title": "Parmair Mac v2 Connection Configuration",
-          "description": "If you need help with the configuration go to: https://github.com/jormai/parmair",
-          "data": {
-            "name": "Custom Name of the ventilator (used for sensors' prefix)",
-            "host": "IP or hostname",
-            "port": "TCP port",
-            "slave_id": "Modbus Slave address of the inverter",
-            "base_addr": "Modbus Register Map Base Address",
-            "scan_interval": "Polling Period (min: 30s max: 600s)"
-          }
+        "step": {
+            "user": {
+                "title": "Parmair Mac v2 -yhteysmääritykset",
+                "description": "Jos tarvitset apua määrityksissä, mene osoitteeseen: https://github.com/jormai/parmair",
+                "data": {
+                    "name": "Mukautettu nimi (käytetään antureiden etuliitteenä)",
+                    "host": "IP-osoite tai isäntänimi",
+                    "port": "TCP-portti",
+                    "slave_id": "Invertterin Modbus-orjan osoite",
+                    "base_addr": "Modbus-rekisterikartan perusosoite",
+                    "scan_interval": "Kyselyjakso (min: 30s max: 600s)"
+                }
+            }
+        },
+        "error": {
+            "already_configured": "Laite on jo määritetty",
+            "invalid_host_ip": "Virheellinen isännän IP-osoite",
+            "connection_failed": "Yhteys laitteeseen epäonnistui"
+        },
+        "abort": {
+            "already_configured": "Laite on jo määritetty"
         }
-      },
-      "error": {
-          "already_configured": "Device is already configured",
-          "invalid_host_ip": "Invalid Host IP",
-          "connection_failed": "Connection to device failed"
-      },
-      "abort": {
-        "already_configured": "Device is already configured"
-      }
     },
     "options": {
-      "step": {
-        "init": {
-          "title": "Parmair Mac v2 Connection Configuration Options",
-          "description": "Set Connection Options",
-          "data": {
-            "port": "TCP port",
-            "slave_id": "Modbus Slave address of the inverter",
-            "base_addr": "Modbus Register Map Base Address",
-            "scan_interval": "Polling Period (min: 30s max: 600s)"
-          }
+        "step": {
+            "init": {
+                "title": "Parmair Mac v2 -yhteysmäärityksen asetukset",
+                "description": "Määritä yhteysasetukset",
+                "data": {
+                    "port": "TCP-portti",
+                    "slave_id": "Invertterin Modbus-orjan osoite",
+                    "base_addr": "Modbus-rekisterikartan perusosoite",
+                    "scan_interval": "Kyselyjakso (min: 30s max: 600s)"
+                }
+            }
         }
-      }
     },
     "entity": {
         "switch": {
@@ -98,22 +98,121 @@
             "filter_alarm": {"name": "Suodattimen hälytys"}
         },
         "select": {
-            "ack_alarms": {"name": "Hälytysten kuittaus (0=ODOTETAAN KUITTAUSTA, 1=OK/KUITTAA)"},
-            "setpoint_temp_ctrl": {"name": "Asetusarvo, lämpötilan säätö (ECO, Vakio)"},
-            "setpoint_time_prog": {"name": "Asetusarvo, Aikaohjelmakäyttö (0=ei käytössä, 1=käytössä)"},
-            "setting_summer_cool": {"name": "Asetus, Kesäviilennystoiminto (0=ei käytössä, 1=on, 2=automaatti)"},
-            "setting_summer_perf": {"name": "Asetus, Kesäkäytön tehomuutokset (0=ei käytössä, 1=automaatti)"},
-            "setting_post_heater": {"name": "Asetus, Jälkilämmitysvastus (0=ei käytössä, 1=automaatti)"},
-            "setting_auto_cold_cut": {"name": "Asetus, Automaattinen tehonpudotus kylmissä olosuhteissa (0=ei käytössä, 1=automaatti)"},
-            "setting_auto_humid_boost": {"name": "Asetus, Automaattinen kosteustehostus (0=ei käytössä, 1=automaatti)"},
-            "setting_auto_co2_boost": {"name": "Asetus, Automaattinen hiilidioksiditehostus (0=ei käytössä, 1=automaatti)"},
-            "setting_auto_home_away_co2": {"name": "Asetus, Automaattinen kotona/poissa (CO2) (0=ei käytössä, 1=automaatti)"},
-            "setpoint_filter_change": {"name": "Asetusarvo, Suodattimien vaihtoväli (0=3kk, 1=4kk, 2=6kk)"},
-            "setting_geo_heat_op": {"name": "Asetusarvo, maalämpömoduulin toiminta (0=Off, 1=On, 2=Auto)"},
-            "geo_heat_coil": {"name": "Maalämpöpatteri (0=Ei asennettu, 1=Asennettu)"},
-            "mac2_user_state": {"name": "MAC 2 User state control from screen. 0=Off, 1=Away, 2=Home, 3=Boost, 4=Sauna, 5=Fireplace"},
-            "fake_setting_filter_cond": {"name": "Fiktiivinen asetus, Suodattimen kunto (0=Idle, 1=Kuittaa vaihto, 2=Muistutushälytys)"}
+            "ack_alarms": {
+                "name": "Hälytyksen kuittaus",
+                "state": {
+                    "waiting_ack": "Odottaa kuittausta",
+                    "ok_ack": "OK/Kuittaa"
+                }
+            },
+            "setpoint_temp_ctrl": {
+                "name": "Asetusarvo, lämpötilan ohjaus",
+                "state": {
+                    "eco": "ECO",
+                    "standard": "Standardi"
+                }
+            },
+            "setpoint_time_prog": {
+                "name": "Asetusarvo, aikaohjelman käyttö",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "in_use": "Käytössä"
+                }
+            },
+            "setting_summer_cool": {
+                "name": "Asetus, kesäviilennystoiminto",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "on": "Päällä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "setting_summer_perf": {
+                "name": "Asetus, kesäkäytön tehomuutokset",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "setting_post_heater": {
+                "name": "Asetus, jälkilämmitysvastus",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "setting_auto_cold_cut": {
+                "name": "Asetus, automaattinen tehon vähennys kylmissä olosuhteissa",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "setting_auto_humid_boost": {
+                "name": "Asetus, automaattinen kosteustehostus",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "setting_auto_co2_boost": {
+                "name": "Asetus, automaattinen CO2-tehostus",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "setting_auto_home_away_co2": {
+                "name": "Asetus, automaattinen kotona/poissa (CO2)",
+                "state": {
+                    "not_in_use": "Ei käytössä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "setpoint_filter_change": {
+                "name": "Asetusarvo, suodattimen vaihtoväli",
+                "state": {
+                    "3m": "3 kuukautta",
+                    "4m": "4 kuukautta",
+                    "6m": "6 kuukautta"
+                }
+            },
+            "setting_geo_heat_op": {
+                "name": "Asetusarvo, maalämpömoduulin käyttö",
+                "state": {
+                    "off": "Pois",
+                    "on": "Päällä",
+                    "automatic": "Automaattinen"
+                }
+            },
+            "geo_heat_coil": {
+                "name": "Maalämpökierukka",
+                "state": {
+                    "not_installed": "Ei asennettu",
+                    "installed": "Asennettu"
+                }
+            },
+            "mac2_user_state": {
+                "name": "MAC 2 Käyttäjätilaohjaus näytöltä",
+                "state": {
+                    "off": "Sammutettu",
+                    "away": "Poissa",
+                    "home": "Kotona",
+                    "boost": "Tehostus",
+                    "sauna": "Sauna",
+                    "fireplace": "Takka"
+                }
+            },
+            "fake_setting_filter_cond": {
+                "name": "Fiktiivinen asetus, suodattimen tila",
+                "state": {
+                    "idle": "Ok",
+                    "ack_needed": "Kuittaa vaihto",
+                    "reminder_alarm": "Muistutushälytys"
+                }
+            }
         },
+
         "number": {
             "setpoint_vent_home": {"name": "Asetusarvo, Ilmanvaihtoasetus kotona-tilassa"},
             "setpoint_min_temp_home": {"name": "Asetusarvo, Tulolämpötilan minimiarvo kotona-tilassa"},
