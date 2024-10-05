@@ -1,4 +1,5 @@
 
+"""Parmair MAC v2 initialization."""
 import ipaddress
 import logging
 import voluptuous as vol
@@ -27,24 +28,7 @@ from .const import (
     STARTUP_MESSAGE,
     SensorSpec,
 )
-"""
-CONFIG_SCHEMA = vol.Schema(
-    vol.All(
-        cv.deprecated(DOMAIN),
-        {
-            DOMAIN: vol.Schema(
-                {
-                    vol.Required(CONF_HOST): vol.All(ipaddress.ip_address, cv.string),
-                    vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-                    vol.Required(CONF_PORT, default=DEFAULT_PORT): cv.positive_int,
-                    vol.Optional(CONF_TE10_MIN_AWAY_S, default=SENSOR_DICT[CONF_TE10_MIN_AWAY_S].factory_setting): cv.string
-                }
-            )
-        },
-    ),
-    extra=vol.ALLOW_EXTRA,
-)
-"""
+
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [
@@ -56,7 +40,7 @@ PLATFORMS: list[Platform] = [
     Platform.CLIMATE
     ]
 
-# The type alias needs to be suffixed with 'ConfigEntry'
+# The type alias needs to be suffixed with 'ConfigEntry'.
 type ParmairConfigEntry = ConfigEntry[RuntimeData]
 
 @dataclass

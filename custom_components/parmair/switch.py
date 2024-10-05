@@ -1,3 +1,4 @@
+"""Parmair switch."""
 import logging
 from typing import Any
 from . import ParmairConfigEntry

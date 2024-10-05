@@ -1,7 +1,4 @@
-"""API Platform for ABB Power-One PVI SunSpec.
-
-https://github.com/alexdelprete/ha-abb-powerone-pvi-sunspec
-"""
+"""API Platform for Parmair MAC Modbus."""
 
 import logging
 import socket

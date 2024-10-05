@@ -1,4 +1,4 @@
-"""Support for Parmair number."""
+"""Climate sensor."""
 
 from __future__ import annotations
 
@@ -116,13 +116,13 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
         _LOGGER.debug(f"Set HVACMode {HVACMode}")
 
     async def async_set_preset_mode(self, preset_mode: str) -> None:
+        """Set preset mode."""
         value = self._attr_preset_modes.index(preset_mode)
         
         result = await self._coordinator.async_write_data(CONF_PRESET_MODE , value)
         _LOGGER.debug(f"Setting value for {CONF_PRESET_MODE}, result {result}")
         self._async_update_attrs()
-        #if result == True:
-        #    await self.coordinator.async_request_refresh()
+
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set the target temperature."""

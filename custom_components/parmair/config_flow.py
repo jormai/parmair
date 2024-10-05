@@ -1,5 +1,4 @@
-"""Config Flow for Parmair
-"""
+"""Config Flow for Parmair."""
 
 import ipaddress
 import logging
@@ -73,7 +72,7 @@ class ParmairConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def test_connection(
         self, name, host, port, slave_id, base_addr, scan_interval
     ):
-        """Return true if credentials is valid."""
+        """Return true if connection works."""
         _LOGGER.debug(f"Test connection to {host}:{port} slave id {slave_id}")
         try:
             _LOGGER.debug("Creating API Client")

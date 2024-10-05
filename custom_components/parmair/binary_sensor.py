@@ -1,3 +1,4 @@
+"""Binary sensors."""
 import logging
 from typing import Any
 from . import ParmairConfigEntry
@@ -23,7 +24,7 @@ def add_sensor_defs(
     config_entry: ParmairConfigEntry,
     sensor_list
 ):
-    """Class Initializitation."""
+    """Add sensor definitions."""
 
     for sensor in SENSOR_DICT.items():
         if sensor[1].platform == Platform.BINARY_SENSOR:
@@ -54,7 +55,7 @@ async def async_setup_entry(
 
 
 class ParmairBinarySensor(CoordinatorEntity, BinarySensorEntity):
-    """Representation of an Parmair binart sensor."""
+    """Representation of an Parmair binary sensor."""
 
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry, sensor_data:tuple[str,SensorSpec]):
         """Class Initializitation."""

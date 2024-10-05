@@ -1,7 +1,4 @@
-"""Data Update Coordinator for Parmair
-
-
-"""
+"""Data Update Coordinator for Parmair."""
 
 import logging
 from datetime import datetime, timedelta
@@ -94,6 +91,7 @@ class ParmairCoordinator(DataUpdateCoordinator):
             raise UpdateFailed() from ex
 
     async def async_write_data(self, key: str, value: int) -> bool:
+        """Write data."""
         try:
             result = await self.api.async_write_data_with_key(key, value)
             if result == True:

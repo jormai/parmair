@@ -1,3 +1,4 @@
+"""Parmair select."""
 import logging
 from typing import Any
 from . import ParmairConfigEntry
@@ -55,7 +56,7 @@ async def async_setup_entry(
 
 
 class ParmairSelect(CoordinatorEntity, SelectEntity):
-    """Representation of an Parmair binart sensor."""
+    """Representation of an Parmair select sensor."""
 
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry, sensor_data:tuple[str,SensorSpec]):
         """Class Initializitation."""

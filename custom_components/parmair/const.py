@@ -1,3 +1,4 @@
+"""Constants for Parmair MAC v2."""
 DOMAIN = "parmair"
 import csv
 from enum import Enum
@@ -103,14 +104,16 @@ DEVICE_GLOBAL_STATUS = {
 READ_ONLY = False
 READ_WRITE = True
 
-    
+
 class SensorSpec:
+    """Class to hold sensor specification"""
     @property
     def name(self) -> str:
         """Get the name."""
         return self._name
     
     def __init__(self, id: int, multiplier: int, name: str, group: str, factory_setting: str,  min_limit: str, max_limit: str, unit: str, sensor_device_class: SensorDeviceClass|BinarySensorDeviceClass|None, icon: str, writeable: bool, platform:Platform=Platform.SENSOR,options:list[str]=None):
+        """Init the class."""
         self.id = id
         self._name = name
         self.group = group
@@ -126,12 +129,14 @@ class SensorSpec:
         self.options = options
 
     def __repr__(self):
+        """Print."""
         return f"DataRow({self.id}, {self.name}, {self.group}, {self.multiplier}, {self.min_limit}, {self.max_limit}, {self.unit}, {self.sensor_device_class}, {self.icon}, {self.writeable})"
 CONF_POWER_SWITCH="UNIT_CONTROL_FO"
 CONF_CURRENT_HUMIDITY="ME05_M"
 CONF_CURRENT_AIRFLOW_INPUT="TE10_M"
 CONF_CURRENT_FAN_SPEED="FAN_SPEED_I"
 CONF_PRESET_MODE="USERSTATECONTROL_FO"
+#Sensor device groups
 GROUPS = {
     "1": "system_settings",
     "2": "physical_inputs",
@@ -148,6 +153,7 @@ Perhaps this includes filter change date?
 2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 197=9
 2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 198=2024
 """
+"""Definition of all sensors except climate sensor."""
 # note, id must be ascending    
 SENSOR_DEFS = {
 "ACK_ALARMS":[3,1,"ack_alarms","1","1","0","1",None,None,"mdi:information-outline",READ_WRITE,Platform.SELECT,["waiting_ack","ok_ack"]],
@@ -259,19 +265,7 @@ SENSOR_DEFS = {
 "TE10_LA":[230,1,"low_limit_temp_supply","7","0","0","11",None,BinarySensorDeviceClass.PROBLEM,"mdi:information-outline",READ_ONLY,Platform.BINARY_SENSOR],
 "FILTER_FA":[240,1,"filter_alarm","7","0","0","1",None,BinarySensorDeviceClass.PROBLEM,"mdi:information-outline",READ_ONLY,Platform.BINARY_SENSOR]
 }
-
+#Create dictionary of sensors
 SENSOR_DICT = {key: SensorSpec(*values) for key, values in SENSOR_DEFS.items()}
-#SENSOR_ID_TO_NAME = {values[0]: key for key, values in SENSOR_DEFS.items()}
 
-# Sensors for all 
-"""
-         sensor_data = {
-            "name": sensor_info[0],
-            "key": sensor_info[1],
-            "unit": sensor_info[2],
-            "icon": sensor_info[3],
-            "device_class": sensor_info[4],
-            "state_class": sensor_info[5],
-        }
-"""
 
