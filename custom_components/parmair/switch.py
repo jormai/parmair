@@ -2,20 +2,16 @@
 import logging
 from typing import Any
 from . import ParmairConfigEntry
-from .api import ParmairAPI
 from .const import CONF_NAME, DOMAIN, GROUPS, SensorSpec
 from .const import SENSOR_DICT
 from .coordinator import ParmairCoordinator
-from homeassistant.components.sensor import SensorEntity
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory, generate_entity_id
+from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.const import Platform
 
 from homeassistant.components.switch import (
     SwitchEntity,
-    SwitchEntityDescription,
 )
 _LOGGER = logging.getLogger(__name__)
 
@@ -98,7 +94,7 @@ class ParmairSwitch(CoordinatorEntity, SwitchEntity):
             return int(self._coordinator.api.data[self._key])>0
         else:
             return None
-    
+
     async def async_turn_on(self, **kwargs: Any) -> None:
         """turn_on the switch."""
         result = await self._coordinator.async_write_data(self._key, 1)

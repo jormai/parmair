@@ -94,7 +94,7 @@ class ParmairCoordinator(DataUpdateCoordinator):
         """Write data."""
         try:
             result = await self.api.async_write_data_with_key(key, value)
-            if result == True:
+            if result:
                 self.async_update_listeners()
             return result
         except Exception as ex:

@@ -2,29 +2,22 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import logging
+from typing import Any
 
 from homeassistant.helpers.entity import generate_entity_id
 
 
 from .coordinator import ParmairCoordinator
 from homeassistant.components.climate import ClimateEntity
-from homeassistant.components.climate.const import HVAC_MODES, PRESET_AWAY, PRESET_BOOST, PRESET_ECO, PRESET_HOME, PRESET_NONE, ClimateEntityFeature, HVACAction, HVACMode
-from homeassistant.components.number import (
-    NumberEntity,
-    NumberEntityDescription,
-    NumberMode,
-)
-from homeassistant.components.number.const import NumberDeviceClass
-from homeassistant.const import CONF_NAME, EntityCategory, Platform, UnitOfTemperature
+from homeassistant.components.climate.const import PRESET_AWAY, PRESET_BOOST, PRESET_HOME, ClimateEntityFeature, HVACAction, HVACMode
+from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.util.enum import try_parse_enum
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import ParmairConfigEntry
-from .const import CONF_CURRENT_AIRFLOW_INPUT, CONF_CURRENT_FAN_SPEED, CONF_CURRENT_HUMIDITY, CONF_POWER_SWITCH, CONF_PRESET_MODE, DOMAIN, SENSOR_DICT
+from .const import CONF_CURRENT_AIRFLOW_INPUT, CONF_CURRENT_FAN_SPEED, CONF_CURRENT_HUMIDITY, CONF_POWER_SWITCH, CONF_PRESET_MODE, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -40,17 +33,18 @@ async def async_setup_entry(
 
 class ParmairClimate(CoordinatorEntity, ClimateEntity):
     """Parmair climate entity."""
+
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry) -> None:
+        """Init the climate entity."""
         super().__init__(coordinator)
         self._coordinator = coordinator
         self._key = "parmair_climate"
-        
         # no name defined for the sensor since uses translated name
         # set to use translated name
         self._attr_has_entity_name = True
         self.entity_id = generate_entity_id("climate.{}", "parmair", hass=coordinator.hass)
         self._attr_translation_key = "parmair_climate"
-        
+
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
         self._attr_translation_key = self._key
 
@@ -65,24 +59,24 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
             "4"
         ]
         self._attr_preset_modes = [
-            "Off", 
-            PRESET_AWAY, 
-            PRESET_HOME, 
+            "off",
+            PRESET_AWAY,
+            PRESET_HOME,
             PRESET_BOOST,
-            "Sauna", 
-            "Fireplace"
+            "sauna",
+            "fireplace"
         ]
         self._attr_hvac_modes = [
             HVACMode.HEAT_COOL,
             HVACMode.OFF
-        ]   
+        ]
         self._attr_supported_features = (
             ClimateEntityFeature.TURN_OFF
             | ClimateEntityFeature.TURN_ON
             | ClimateEntityFeature.PRESET_MODE
         )
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
-        
+
         #_enable_turn_on_off_backwards_compatibility = False
         self._async_update_attrs()
 
@@ -118,7 +112,7 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
     async def async_set_preset_mode(self, preset_mode: str) -> None:
         """Set preset mode."""
         value = self._attr_preset_modes.index(preset_mode)
-        
+
         result = await self._coordinator.async_write_data(CONF_PRESET_MODE , value)
         _LOGGER.debug(f"Setting value for {CONF_PRESET_MODE}, result {result}")
         self._async_update_attrs()
@@ -126,5 +120,5 @@ class ParmairClimate(CoordinatorEntity, ClimateEntity):
 
     async def async_set_temperature(self, **kwargs: Any) -> None:
         """Set the target temperature."""
-        _LOGGER.debug(f"Set async_set_temperature")
+        _LOGGER.debug("Set async_set_temperature")
 

@@ -1,13 +1,10 @@
 """Parmair sensor."""
 import logging
-from typing import Any
 from . import ParmairConfigEntry
-from .api import ParmairAPI
 from .const import CONF_NAME, DOMAIN, GROUPS, SensorSpec
 from .const import SENSOR_DICT
 from .coordinator import ParmairCoordinator
 from homeassistant.components.sensor import SensorEntity
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, generate_entity_id
 from homeassistant.const import Platform
@@ -65,22 +62,22 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
         self._attr_has_entity_name = True
         self.entity_id = generate_entity_id("sensor.{}", sensor_data[1].name, hass=coordinator.hass)
         self._attr_translation_key = sensor_data[1].name
-        
+
         self._attr_unique_id = f"{config_entry.unique_id}-{self._key}"
-        
+
         self._attr_native_unit_of_measurement = spec.unit
         self._attr_icon = spec.icon
         self._attr_device_class = spec.sensor_device_class
         self._attr_entity_category = EntityCategory.DIAGNOSTIC if spec.sensor_device_class is None else None
         self._attr_should_poll = False
-        
+
         # To link this entity the Parmair device
         self._attr_device_info = {"identifiers": {(DOMAIN,  f"{config_entry.unique_id}-{GROUPS[spec.group]}")}}
 
     @callback
     def _handle_coordinator_update(self) -> None:
         """Fetch new state data for the sensor."""
-        if not self._key in self._coordinator.api.data:
+        if self._key not in self._coordinator.api.data:
             return
         self._state = self._coordinator.api.data[self._key]
         self.async_write_ha_state()
@@ -97,4 +94,3 @@ class ParmairSensor(CoordinatorEntity, SensorEntity):
             return self._coordinator.api.data[self._key]
         else:
             return None
-            

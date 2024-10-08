@@ -3,7 +3,6 @@
 import ipaddress
 import logging
 import re
-import uuid
 
 import voluptuous as vol
 from homeassistant import config_entries
@@ -84,7 +83,7 @@ class ParmairConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             _LOGGER.debug("API Client: get data")
             _LOGGER.debug(f"API Client Data: {self.api_data}")
             return True
-                      
+
         except ConnectionException as connerr:
             _LOGGER.error(
                 f"Failed to connect to host: {host}:{port} - slave id: {slave_id} - Exception: {connerr}"

@@ -1,11 +1,11 @@
+"""parmair: Parmair MAC v2 integration for home assistant.
 
-"""Parmair MAC v2 initialization."""
-import ipaddress
+This package provides Home Assistant Custom component for integrating Parmair energy recovery ventilator units using Parmair MAC v2 control.
+https://github.com/jormai/parmair
+"""
 import logging
-import voluptuous as vol
 from collections.abc import Callable
 from dataclasses import dataclass
-import homeassistant.helpers.config_validation as cv
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
@@ -19,22 +19,17 @@ from custom_components.parmair.coordinator import ParmairCoordinator
 from .const import (
     CONF_HOST,
     CONF_NAME,
-    CONF_PORT,
-    DEFAULT_NAME,
-    DEFAULT_PORT,
     DOMAIN,
     GROUPS,
-    SENSOR_DICT,
     STARTUP_MESSAGE,
-    SensorSpec,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
 PLATFORMS: list[Platform] = [
-    Platform.SENSOR, 
-    Platform.BINARY_SENSOR, 
-    Platform.SELECT, 
+    Platform.SENSOR,
+    Platform.BINARY_SENSOR,
+    Platform.SELECT,
     Platform.SWITCH,
     Platform.NUMBER,
     Platform.CLIMATE
@@ -71,7 +66,7 @@ async def async_update_device_registry(
     coordinator: ParmairCoordinator = config_entry.runtime_data.coordinator
     device_registry = dr.async_get(hass)
 
-    for key, value in GROUPS.items():
+    for _, value in GROUPS.items():
         device_registry.async_get_or_create(
             config_entry_id=config_entry.entry_id,
             hw_version=None,
@@ -100,7 +95,7 @@ async def async_setup_entry(
     # Initialise the coordinator that manages data updates from your api.
     # This is defined in coordinator.py
     coordinator = ParmairCoordinator(hass, config_entry)
-    
+
 
     # If the refresh fails, async_config_entry_first_refresh() will
     # raise ConfigEntryNotReady and setup will try again later
@@ -130,5 +125,5 @@ async def async_setup_entry(
     await async_update_device_registry(hass, config_entry)
 
     # Return true to denote a successful setup.
-    _LOGGER.debug(f"Parmair async setup complete!")
+    _LOGGER.debug("Parmair async setup complete!")
     return True

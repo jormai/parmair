@@ -1,57 +1,16 @@
 """Constants for Parmair MAC v2."""
-DOMAIN = "parmair"
-import csv
-from enum import Enum
-import json
-import re
-from homeassistant.components.climate.const import PRESET_ECO, PRESET_NONE, HVACMode
-from homeassistant.components.number.const import NumberDeviceClass
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.sensor import SensorDeviceClass
 from homeassistant.components.switch import SwitchDeviceClass
 from homeassistant.const import (
-    UnitOfElectricCurrent,
-    UnitOfElectricPotential,
-    UnitOfEnergy,
-    UnitOfFrequency,
-    UnitOfPower,
-    UnitOfTemperature,
     Platform,
 )
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
-    BinarySensorEntity,
-    BinarySensorEntityDescription,
 )
 
-from _ctypes import PyObj_FromPtr
-import json
-import re
-
-class NoIndent(object):
-    """ Value wrapper. """
-    def __init__(self, value):
-        self.value = value
-
-
-class MyJSONEncoder(json.JSONEncoder):
-
-  def iterencode(self, o, _one_shot=False):
-    list_lvl = 0
-    for s in super(MyJSONEncoder, self).iterencode(o, _one_shot=_one_shot):
-      if s.startswith('['):
-        list_lvl += 1
-        s = s.replace('\n', '').rstrip()
-      elif 0 < list_lvl:
-        s = s.replace('\n', '').rstrip()
-        if s and s[-1] == ',':
-          s = s[:-1] + self.item_separator
-        elif s and s[-1] == ':':
-          s = s[:-1] + self.key_separator
-      if s.endswith(']'):
-        list_lvl -= 1
-      yield s
-    
 # Base component constants
+
+DOMAIN = "parmair"
 NAME = "Parmair MAC v2 ModBus TCP"
 DOMAIN = "parmair"
 DEFAULT_NAME = "parmair"
@@ -106,12 +65,13 @@ READ_WRITE = True
 
 
 class SensorSpec:
-    """Class to hold sensor specification"""
+    """Class to hold sensor specification."""
+
     @property
     def name(self) -> str:
         """Get the name."""
         return self._name
-    
+
     def __init__(self, id: int, multiplier: int, name: str, group: str, factory_setting: str,  min_limit: str, max_limit: str, unit: str, sensor_device_class: SensorDeviceClass|BinarySensorDeviceClass|None, icon: str, writeable: bool, platform:Platform=Platform.SENSOR,options:list[str]=None):
         """Init the class."""
         self.id = id
@@ -154,7 +114,7 @@ Perhaps this includes filter change date?
 2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 198=2024
 """
 """Definition of all sensors except climate sensor."""
-# note, id must be ascending    
+# note, id must be ascending
 SENSOR_DEFS = {
 "ACK_ALARMS":[3,1,"ack_alarms","1","1","0","1",None,None,"mdi:information-outline",READ_WRITE,Platform.SELECT,["waiting_ack","ok_ack"]],
 "ALARM_COUNT":[4,1,"alarm_count","1","0","0","100",None,None,"mdi:information-outline",READ_ONLY],

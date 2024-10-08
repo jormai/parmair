@@ -1,23 +1,16 @@
 """Parmair select."""
 import logging
-from typing import Any
 from . import ParmairConfigEntry
-from .api import ParmairAPI
 from .const import CONF_NAME, DOMAIN, GROUPS, SensorSpec
 from .const import SENSOR_DICT
 from .coordinator import ParmairCoordinator
 from homeassistant.components.select import SelectEntity
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.const import Platform
 
-from homeassistant.components.switch import (
-    SwitchEntity,
-    SwitchEntityDescription,
-)
 _LOGGER = logging.getLogger(__name__)
 
 def add_sensor_defs(
@@ -81,7 +74,7 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
         self._current_index = 0
         self._current_index = int(self._coordinator.api.data[self._key])
         self._attr_options = sensor_data[1].options
-        
+
 
     @property
     def current_option(self) -> str:
@@ -109,10 +102,10 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
 
     async def async_select_option(self, option: str) -> None:
         """Select an option."""
-        if self._spec.writeable == False:
+        if not self._spec.writeable:
             _LOGGER.warning(f"Read only entity {self._key}")
             return
-        if self._spec.options == None:
+        if self._spec.options is None:
             _LOGGER.warning(f"Options are not defined for {self._key}")
             return
         try:
@@ -122,4 +115,3 @@ class ParmairSelect(CoordinatorEntity, SelectEntity):
         except ValueError:
             _LOGGER.warning(f"Option {option} was not found in {self._key}")
             return
-        

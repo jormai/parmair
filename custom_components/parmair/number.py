@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 import logging
 
 from homeassistant.helpers.entity import generate_entity_id
@@ -11,10 +10,8 @@ from homeassistant.helpers.entity import generate_entity_id
 from .coordinator import ParmairCoordinator
 from homeassistant.components.number import (
     NumberEntity,
-    NumberEntityDescription,
     NumberMode,
 )
-from homeassistant.components.number.const import NumberDeviceClass
 from homeassistant.const import CONF_NAME, EntityCategory, Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -55,7 +52,7 @@ async def async_setup_entry(
 
 class ParmairNumber(CoordinatorEntity, NumberEntity):
     """Parmair number."""
-    
+
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry, sensor_data:tuple[str,SensorSpec]):
         """Class Initializitation."""
         _LOGGER.debug(f"ParmairNumber {sensor_data[0]}")
@@ -91,7 +88,7 @@ class ParmairNumber(CoordinatorEntity, NumberEntity):
         if (svalue := self._coordinator.api.data[self._key]) is not None:
             return int(svalue)
         return None
-            
+
     @callback
     def _handle_coordinator_update(self) -> None:
         """Fetch new state data for the sensor."""
@@ -106,9 +103,9 @@ class ParmairNumber(CoordinatorEntity, NumberEntity):
 
     async def async_set_native_value(self, value: float) -> None:
         """Set the value."""
-        if self._spec.writeable == False:
+        if not self._spec.writeable:
             return
-        
+
         reg_value = int(value*self._spec.multiplier)
         result = await self._coordinator.async_write_data(self._key, reg_value)
         _LOGGER.debug(f"Setting value for {self._key}, result {result}")

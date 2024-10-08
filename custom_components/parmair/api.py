@@ -184,7 +184,7 @@ class ParmairAPI:
             raise ModbusError() from modbus_error
         finally:
             self.close()
-    
+
 
     def read_modbus_registers(self)-> bool:
         """Read the Modbus registers in chunks of up to 64 contiguous addresses."""
@@ -204,12 +204,12 @@ class ParmairAPI:
                 _LOGGER.debug(f"(read_parmair_modbus_v2) Count: {count}")
                 # Read registers from Modbus
                 read_data = self._client.read_holding_registers(start_address+self._base_addr, count)
-                
+
                 # Process the result (store or print the values here)
                 _LOGGER.debug(f"Read registers from {start_address} to {start_address + count - 1}: {read_data} : {read_data.registers}")
-                
+
                 decoder = BinaryPayloadDecoder.fromRegisters(read_data.registers, byteorder=Endian.BIG)
-                
+
                 try:
                     for i in range(0, count):
                         register = first_value + loop * count + i
@@ -227,7 +227,7 @@ class ParmairAPI:
                     _LOGGER.debug("all sensor items handled")
                     break
                 loop+=1
-                    
+
         except Exception as modbus_error:
             _LOGGER.debug(f"read_parmair_modbus: failed with error: {modbus_error}")
             result = False
@@ -266,4 +266,4 @@ class ParmairAPI:
             raise ModbusError() from modbus_error
         finally:
             # Close the connection
-            self.close()        
+            self.close()

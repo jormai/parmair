@@ -1,13 +1,9 @@
 """Binary sensors."""
 import logging
-from typing import Any
 from . import ParmairConfigEntry
-from .api import ParmairAPI
 from .const import CONF_NAME, DOMAIN, GROUPS, SensorSpec
 from .const import SENSOR_DICT
 from .coordinator import ParmairCoordinator
-from homeassistant.components.sensor import SensorEntity
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, generate_entity_id
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -15,7 +11,6 @@ from homeassistant.const import Platform
 
 from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
-    BinarySensorEntityDescription,
 )
 _LOGGER = logging.getLogger(__name__)
 
