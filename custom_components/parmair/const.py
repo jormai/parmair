@@ -112,6 +112,10 @@ Perhaps this includes filter change date?
 2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 196=5
 2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 197=9
 2024-10-05 14:40:45.965 DEBUG (SyncWorker_0) [custom_components.parmair.api] Skipping 198=2024
+Yes!
+2024-10-11 08:05:26.658 DEBUG (SyncWorker_1) [custom_components.parmair.api] Skipping 196=11
+2024-10-11 08:05:26.658 DEBUG (SyncWorker_1) [custom_components.parmair.api] Skipping 197=4
+2024-10-11 08:05:26.658 DEBUG (SyncWorker_1) [custom_components.parmair.api] Skipping 198=2025
 """
 """Definition of all sensors except climate sensor."""
 # note, id must be ascending
@@ -210,6 +214,9 @@ SENSOR_DEFS = {
 "SUMMER_POWER_CHANGE_FM":[190,1,"summer_power_ctrl","1","0","-1","1",None,None,"mdi:information-outline",READ_ONLY],
 "HUMIDITY_FM":[191,100,"calc_humidity","1","0.00","0.00","100.00","g/kg",SensorDeviceClass.MOISTURE,"mdi:water-percent",READ_ONLY],
 "ME05_AVG_FM":[192,10,"fake_meas_hrv_humid","11","0.0","0.0","100.0","%",SensorDeviceClass.MOISTURE,"mdi:water-percent",READ_ONLY],
+"FC_DATE_DAY":[196,1,"next_filter_change_day","11","1","1","31",None,None,"mdi:information-outline",READ_ONLY],
+"FC_DATE_MONTH":[197,1,"next_filter_change_month","11","8","1","12",None,None,"mdi:information-outline",READ_ONLY],
+"FC_DATE_YEAR":[198,1,"next_filter_change_year","11","2023","2000","3000",None,None,"mdi:information-outline",READ_ONLY],
 "PWR_LIMIT_FY":[199,10,"fake_ctrl_fan_limit","1","0.0","0.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:percent-circle",READ_ONLY],
 "TE01_AVG_FM":[213,10,"ext_temp_daily_avg","1","0.0","-50.0","50.0","°C",SensorDeviceClass.TEMPERATURE,"mdi:temperature-celsius",READ_ONLY],
 "TE01_FA":[220,1,"error_temp_fresh_air","7","0","0","11",None,BinarySensorDeviceClass.PROBLEM,"mdi:information-outline",READ_ONLY,Platform.BINARY_SENSOR],

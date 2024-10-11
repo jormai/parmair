@@ -40,7 +40,7 @@
   "entity": {
         "switch": {
             "hrv_control": {
-              "name": "HR unit control (0=Off, 1=On)"
+              "name": "HRV unit control on/off"
             }
         },
         "climate": {
@@ -83,7 +83,10 @@
             "calc_humidity": {"name": "Calculated humidity"},
             "fake_meas_hrv_humid": {"name": "Fictitious measurement, HRV humidity measurement 24h average"},
             "fake_ctrl_fan_limit": {"name": "Fictitious control, fan power limit"},
-            "ext_temp_daily_avg": {"name": "Outdoor temperature daily average"}
+            "ext_temp_daily_avg": {"name": "Outdoor temperature daily average"},
+            "next_filter_change_day": {"name": "Next filter change day"},
+            "next_filter_change_month": {"name": "Next filter change month"},
+            "next_filter_change_year": {"name": "Next filter change year"}
         },
         "binary_sensor": {
             "fan_ind_supply": {"name": "Indicator, supply fan"},
@@ -188,7 +191,7 @@
                     "installed": "Installed"
               }
             },
-            "mac2_user_state": {"name": "User state control from screen.",
+            "mac2_user_state": {"name": "HRV unit state",
               "state": {
                     "off": "Off",
                     "away": "Away",

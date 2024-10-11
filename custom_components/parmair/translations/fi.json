@@ -39,7 +39,7 @@
     },
     "entity": {
         "switch": {
-            "hrv_control": {"name": "IV-koneen ohjaus (0=Off, 1=On)"}
+            "hrv_control": {"name": "IV-koneen ohjaus päälle/pois"}
         },
         "sensor": {
             "alarm_count": {"name": "Aktiivisten hälytysten määrä"},
@@ -78,7 +78,10 @@
             "calc_humidity": {"name": "Laskettu kosteus"},
             "fake_meas_hrv_humid": {"name": "Fiktiivinen mittaus, LTO:n kosteusmittauksen 24h keskiarvo"},
             "fake_ctrl_fan_limit": {"name": "Fiktiivinen säätö, puhaltimien tehonrajoitus"},
-            "ext_temp_daily_avg": {"name": "Ulkolämpötilan vrk keskiarvo"}
+            "ext_temp_daily_avg": {"name": "Ulkolämpötilan vrk keskiarvo"},
+            "next_filter_change_day": {"name": "Päivä, seuraava suodattimen vaihto"},
+            "next_filter_change_month": {"name": "Kuukausi, seuraava suodattimen vaihto"},
+            "next_filter_change_year": {"name": "Vuosi, seuraava suodattimen vaihto"}
         },
         "binary_sensor": {
             "fan_ind_supply": {"name": "Indikointi, tulopuhallin"},
@@ -193,7 +196,7 @@
                 }
             },
             "mac2_user_state": {
-                "name": "Käyttäjätilaohjaus näytöltä",
+                "name": "IV-koneen tila",
                 "state": {
                     "off": "Sammutettu",
                     "away": "Poissa",
