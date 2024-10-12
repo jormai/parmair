@@ -47,7 +47,7 @@ async def async_setup_entry(
 
 
 class ParmairSensor(CoordinatorEntity, SensorEntity):
-    """Representation of an ABB SunSpec Modbus sensor."""
+    """Representation of an sensor."""
 
     def __init__(self, coordinator: ParmairCoordinator, config_entry: ParmairConfigEntry, sensor_data:tuple[str,SensorSpec]):
         """Class Initializitation."""

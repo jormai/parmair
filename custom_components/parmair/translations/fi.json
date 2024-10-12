@@ -41,6 +41,9 @@
         "switch": {
             "hrv_control": {"name": "IV-koneen ohjaus päälle/pois"}
         },
+        "date": {
+            "next_filter_change_day": {"name": "Seuraava suodattimen vaihto"}
+          },
         "sensor": {
             "alarm_count": {"name": "Aktiivisten hälytysten määrä"},
             "year": {"name": "Vuosi"},

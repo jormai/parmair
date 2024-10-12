@@ -96,6 +96,10 @@ CONF_CURRENT_HUMIDITY="ME05_M"
 CONF_CURRENT_AIRFLOW_INPUT="TE10_M"
 CONF_CURRENT_FAN_SPEED="FAN_SPEED_I"
 CONF_PRESET_MODE="USERSTATECONTROL_FO"
+CONF_PA_DATE_CLASS="PA.DateClass"
+CONF_FC_DATE_DAY="FC_DATE_DAY"
+CONF_FC_DATE_MONTH="FC_DATE_MONTH"
+CONF_FC_DATE_YEAR="FC_DATE_YEAR"
 #Sensor device groups
 GROUPS = {
     "1": "system_settings",
@@ -214,9 +218,9 @@ SENSOR_DEFS = {
 "SUMMER_POWER_CHANGE_FM":[190,1,"summer_power_ctrl","1","0","-1","1",None,None,"mdi:information-outline",READ_ONLY],
 "HUMIDITY_FM":[191,100,"calc_humidity","1","0.00","0.00","100.00","g/kg",SensorDeviceClass.MOISTURE,"mdi:water-percent",READ_ONLY],
 "ME05_AVG_FM":[192,10,"fake_meas_hrv_humid","11","0.0","0.0","100.0","%",SensorDeviceClass.MOISTURE,"mdi:water-percent",READ_ONLY],
-"FC_DATE_DAY":[196,1,"next_filter_change_day","11","1","1","31",None,None,"mdi:information-outline",READ_ONLY],
-"FC_DATE_MONTH":[197,1,"next_filter_change_month","11","8","1","12",None,None,"mdi:information-outline",READ_ONLY],
-"FC_DATE_YEAR":[198,1,"next_filter_change_year","11","2023","2000","3000",None,None,"mdi:information-outline",READ_ONLY],
+CONF_FC_DATE_DAY:[196,1,"next_filter_change_day","11","1","1","31",None,CONF_PA_DATE_CLASS,"mdi:information-outline",READ_ONLY],
+CONF_FC_DATE_MONTH:[197,1,"next_filter_change_month","11","8","1","12",None,CONF_PA_DATE_CLASS,"mdi:information-outline",READ_ONLY],
+CONF_FC_DATE_YEAR:[198,1,"next_filter_change_year","11","2023","2000","3000",None,CONF_PA_DATE_CLASS,"mdi:information-outline",READ_ONLY],
 "PWR_LIMIT_FY":[199,10,"fake_ctrl_fan_limit","1","0.0","0.0","100.0","%",SensorDeviceClass.POWER_FACTOR,"mdi:percent-circle",READ_ONLY],
 "TE01_AVG_FM":[213,10,"ext_temp_daily_avg","1","0.0","-50.0","50.0","°C",SensorDeviceClass.TEMPERATURE,"mdi:temperature-celsius",READ_ONLY],
 "TE01_FA":[220,1,"error_temp_fresh_air","7","0","0","11",None,BinarySensorDeviceClass.PROBLEM,"mdi:information-outline",READ_ONLY,Platform.BINARY_SENSOR],

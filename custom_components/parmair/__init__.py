@@ -32,7 +32,8 @@ PLATFORMS: list[Platform] = [
     Platform.SELECT,
     Platform.SWITCH,
     Platform.NUMBER,
-    Platform.CLIMATE
+    Platform.CLIMATE,
+    Platform.DATE
     ]
 
 # The type alias needs to be suffixed with 'ConfigEntry'.

@@ -46,6 +46,9 @@
         "climate": {
             "parmair_climate": {"name": "Parmair Climate"}
         },
+        "date": {
+          "next_filter_change_day": {"name": "Next filter change day"}
+        },
         "sensor": {
             "alarm_count": {"name": "Number of Active Alarms"},
             "year": {"name": "Year"},
