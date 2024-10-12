@@ -1,14 +1,14 @@
 """Parmair sensor."""
 from datetime import datetime
+from datetime import date
 import logging
 from . import ParmairConfigEntry
 from .const import CONF_NAME, CONF_FC_DATE_YEAR, CONF_FC_DATE_MONTH, CONF_FC_DATE_DAY, DOMAIN, GROUPS, SensorSpec
 from .const import SENSOR_DICT
 from .coordinator import ParmairCoordinator
 from homeassistant.components.date import DateEntity
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory, generate_entity_id
-from homeassistant.const import Platform
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 _LOGGER = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def add_sensor_defs(
 ):
     """Class Initializitation."""
     sensor_list.append(
-                ParmairDateEntity(coordinator, config_entry, (CONF_FC_DATE_DAY, SENSOR_DICT[CONF_FC_DATE_DAY]), 
+                ParmairDateEntity(coordinator, config_entry, (CONF_FC_DATE_DAY, SENSOR_DICT[CONF_FC_DATE_DAY]),
                                   (CONF_FC_DATE_MONTH,SENSOR_DICT[CONF_FC_DATE_MONTH]), (CONF_FC_DATE_YEAR,SENSOR_DICT[CONF_FC_DATE_YEAR]))
             )
 
@@ -64,13 +64,14 @@ class ParmairDateEntity(CoordinatorEntity, DateEntity):
         #self._attr_native_unit_of_measurement = spec.unit
         self._attr_icon = sensor_data_day[1].icon
         #self._attr_device_class = spec.sensor_device_class
-        self._attr_entity_category = EntityCategory.DIAGNOSTIC 
+        self._attr_entity_category = EntityCategory.DIAGNOSTIC
         self._attr_should_poll = False
+
 
         # To link this entity the Parmair device
         self._attr_device_info = {"identifiers": {(DOMAIN,  f"{config_entry.unique_id}-{GROUPS[sensor_data_day[1].group]}")}}
 
-    
+
     @property
     def native_value(self):
         """Return the state of the sensor."""
@@ -84,3 +85,6 @@ class ParmairDateEntity(CoordinatorEntity, DateEntity):
         date_format = "%m.%d.%Y"
         return datetime.strptime(f"{day}.{month}.{year}", date_format)
 
+    async def async_set_value(self, value: date) -> None:
+        """Change the date."""
+        _LOGGER.debug(f"Setting data not implemented {value}")
