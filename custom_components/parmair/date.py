@@ -82,7 +82,7 @@ class ParmairDateEntity(CoordinatorEntity, DateEntity):
         day = self._coordinator.api.data[self._key_day]
         month = self._coordinator.api.data[self._key_month]
         year = self._coordinator.api.data[self._key_year]
-        date_format = "%m.%d.%Y"
+        date_format = "%d.%m.%Y"
         return datetime.strptime(f"{day}.{month}.{year}", date_format)
 
     async def async_set_value(self, value: date) -> None:
